@@ -35,10 +35,7 @@ const Login =()=> {
     <div className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold text-ink">Sign in</h1>
-          <p className="mt-1 text-sm text-muted">
-            Enter your details to access your dashboard.
-          </p>
+          <h1 className="text-2xl font-semibold text-ink">Sign in</h1>  
         </div>
 
         <Card>
@@ -71,10 +68,6 @@ const Login =()=> {
             </Button>
           </form>
         </Card>
-
-        <p className="mt-6 text-center text-sm text-muted">
-          Any email and password will work — this is a demo login.
-        </p>
       </div>
     </div>
   )
