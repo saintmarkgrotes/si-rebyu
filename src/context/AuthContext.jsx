@@ -1,35 +1,59 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
-// Minimal mock auth: swap the body of login() for a real API call later.
-// It just needs to resolve/throw — everything else already wired up.
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('auth_user')
-    return saved ? JSON.parse(saved) : null
-  })
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // restore session on page load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    // keep in sync across tabs / token refresh / sign-out
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
   async function login(email, password) {
     if (!email || !password) {
       throw new Error('Enter your email and password.')
     }
-    // Simulate a network call. Replace with a real request when ready.
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    const nextUser = { email }
-    localStorage.setItem('auth_user', JSON.stringify(nextUser))
-    setUser(nextUser)
-    return nextUser
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) throw new Error(error.message)
+    setUser(data.user)
+    return data.user
   }
 
-  function logout() {
-    localStorage.removeItem('auth_user')
+  async function signup(email, password) {
+    if (!email || !password) {
+      throw new Error('Enter your email and password.')
+    }
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) throw new Error(error.message)
+    return data.user
+  }
+
+  async function logout() {
+    const { error } = await supabase.auth.signOut()
+    if (error) throw new Error(error.message)
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   )
