@@ -3,8 +3,9 @@ import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Documents from './pages/Documents'
 
-const App =()=> {
+const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -19,6 +20,14 @@ const App =()=> {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/documents"
+            element={
+              <ProtectedRoute>
+                <Documents />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
@@ -26,4 +35,4 @@ const App =()=> {
   )
 }
 
-export default App;
+export default App
