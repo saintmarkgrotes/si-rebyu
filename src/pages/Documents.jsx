@@ -5,7 +5,7 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import NavHeader from '../components/NavHeader'
 
-const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx']
+const ACCEPTED_TYPES = ['.pdf', '.docx']
 const MAX_SIZE_MB = 20
 
 const Documents = () => {
@@ -39,7 +39,7 @@ const Documents = () => {
   const validateFile = (file) => {
     const ext = '.' + file.name.split('.').pop().toLowerCase()
     if (!ACCEPTED_TYPES.includes(ext)) {
-      return 'Only PDF or Word files (.pdf, .doc, .docx) are allowed.'
+      return 'Only PDF or Word files (.pdf, .docx) are allowed.'
     }
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       return `File is too large. Max size is ${MAX_SIZE_MB}MB.`
