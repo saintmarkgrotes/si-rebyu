@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
-export default function Modal({ open, onClose, title, children }) {
+const Modal = ({ open, onClose, title, children }) => {
   useEffect(() => {
     if (!open) return
-    function onKeyDown(e) {
+    const onKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKeyDown)
@@ -46,3 +46,5 @@ export default function Modal({ open, onClose, title, children }) {
     </div>
   )
 }
+
+export default Modal

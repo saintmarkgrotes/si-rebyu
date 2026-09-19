@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export async function uploadDocument(file, userId) {
+export const uploadDocument = async (file, userId) => {
   const filePath = `${userId}/${Date.now()}_${file.name}`
   const { error: uploadError } = await supabase.storage.from('documents').upload(filePath, file)
   if (uploadError) throw uploadError
@@ -15,7 +15,7 @@ export async function uploadDocument(file, userId) {
   return data
 }
 
-export async function getDocuments() {
+export const getDocuments = async () => {
   const { data, error } = await supabase
     .from('documents')
     .select('*')
@@ -24,7 +24,7 @@ export async function getDocuments() {
   return data
 }
 
-export async function getDocumentWithQuestions(documentId) {
+export const getDocumentWithQuestions = async (documentId) => {
   const { data, error } = await supabase
     .from('documents')
     .select('*, questions(*)')
@@ -34,7 +34,7 @@ export async function getDocumentWithQuestions(documentId) {
   return data
 }
 
-export async function deleteDocument(documentId, storagePath) {
+export const deleteDocument = async (documentId, storagePath) => {
   const { error: storageError } = await supabase.storage.from('documents').remove([storagePath])
   if (storageError) throw storageError
   const { error } = await supabase.from('documents').delete().eq('id', documentId)

@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export async function getTasks() {
+export const getTasks = async () => {
   const { data, error } = await supabase
     .from('tasks')
     .select('*')
@@ -10,7 +10,7 @@ export async function getTasks() {
   return data
 }
 
-export async function addTask(userId, { title, note, dueDate }) {
+export const addTask = async (userId, { title, note, dueDate }) => {
   const { data, error } = await supabase
     .from('tasks')
     .insert({
@@ -25,7 +25,7 @@ export async function addTask(userId, { title, note, dueDate }) {
   return data
 }
 
-export async function setTaskDone(taskId, isDone) {
+export const setTaskDone = async (taskId, isDone) => {
   const { data, error } = await supabase
     .from('tasks')
     .update({ is_done: isDone })
@@ -36,7 +36,7 @@ export async function setTaskDone(taskId, isDone) {
   return data
 }
 
-export async function deleteTask(taskId) {
+export const deleteTask = async (taskId) => {
   const { error } = await supabase.from('tasks').delete().eq('id', taskId)
   if (error) throw error
 }

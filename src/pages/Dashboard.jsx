@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     let active = true
-    async function loadStats() {
+    const loadStats = async () => {
       setLoading(true)
       setError('')
       const [docs, sessions, topics] = await Promise.all([

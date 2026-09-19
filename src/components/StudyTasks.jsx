@@ -4,7 +4,7 @@ import { getTasks, addTask, setTaskDone, deleteTask } from '../lib/tasks'
 import Card from './Card'
 import AddTaskModal from './AddTaskModal'
 
-function formatDue(dateStr) {
+const formatDue = (dateStr) => {
   // date-only strings parse as UTC; add a time so it stays on the right local day
   return new Date(`${dateStr}T00:00:00`).toLocaleDateString(undefined, {
     month: 'short',
@@ -12,14 +12,14 @@ function formatDue(dateStr) {
   })
 }
 
-function isOverdue(task) {
+const isOverdue = (task) => {
   if (!task.due_date || task.is_done) return false
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   return new Date(`${task.due_date}T00:00:00`) < today
 }
 
-export default function StudyTasks() {
+const StudyTasks = () => {
   const { user } = useAuth()
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -37,13 +37,13 @@ export default function StudyTasks() {
     }
   }, [])
 
-  async function handleAdd(values) {
+  const handleAdd = async (values) => {
     const task = await addTask(user.id, values)
     setTasks((prev) => [task, ...prev])
     setModalOpen(false)
   }
 
-  async function handleToggle(task) {
+  const handleToggle = async (task) => {
     setError('')
     try {
       const updated = await setTaskDone(task.id, !task.is_done)
@@ -53,7 +53,7 @@ export default function StudyTasks() {
     }
   }
 
-  async function handleDelete(task) {
+  const handleDelete = async (task) => {
     setError('')
     try {
       await deleteTask(task.id)
@@ -89,7 +89,7 @@ export default function StudyTasks() {
 
       <div className="mt-4">
         {!loading && tasks.length === 0 ? (
-          <Card className="!p-6 text-center">
+          <Card className="p-6! text-center">
             <p className="text-sm text-muted">
               Nothing here yet. Tap the + to add something to study.
             </p>
@@ -98,7 +98,7 @@ export default function StudyTasks() {
           <ul className="flex flex-col gap-3">
             {tasks.map((task) => (
               <li key={task.id}>
-                <Card className="flex items-start gap-3 !p-4">
+                <Card className="flex items-start gap-3 p-4!">
                   <input
                     type="checkbox"
                     checked={task.is_done}
@@ -151,3 +151,5 @@ export default function StudyTasks() {
     </section>
   )
 }
+
+export default StudyTasks

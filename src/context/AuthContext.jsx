@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  async function login(email, password) {
+  const login = async (email, password) => {
     if (!email || !password) {
       throw new Error('Enter your email and password.')
     }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
     return data.user
   }
 
-  async function signup(email, password) {
+  const signup = async (email, password) => {
     if (!email || !password) {
       throw new Error('Enter your email and password.')
     }
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
     return data.user
   }
 
-  async function logout() {
+  const logout = async () => {
     const { error } = await supabase.auth.signOut()
     if (error) throw new Error(error.message)
     setUser(null)
@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
   )
 }
 
-export function useAuth() {
+export const useAuth = () => {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider')
   return ctx

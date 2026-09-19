@@ -13,14 +13,14 @@ const THEME_OPTIONS = [
   { value: 'system', label: 'System' },
 ]
 
-function ChangePasswordForm() {
+const ChangePasswordForm = () => {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setSuccess('')

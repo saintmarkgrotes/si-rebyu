@@ -46,7 +46,7 @@ const Icons = {
   ),
 }
 
-export default function ProfileMenu() {
+const ProfileMenu = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -56,10 +56,10 @@ export default function ProfileMenu() {
   // close on outside click / Escape
   useEffect(() => {
     if (!open) return
-    function onPointerDown(e) {
+    const onPointerDown = (e) => {
       if (rootRef.current && !rootRef.current.contains(e.target)) setOpen(false)
     }
-    function onKeyDown(e) {
+    const onKeyDown = (e) => {
       if (e.key === 'Escape') {
         setOpen(false)
         buttonRef.current?.focus()
@@ -73,7 +73,7 @@ export default function ProfileMenu() {
     }
   }, [open])
 
-  async function handleLogout() {
+  const handleLogout = async () => {
     setOpen(false)
     try {
       await logout()
@@ -145,3 +145,5 @@ export default function ProfileMenu() {
     </div>
   )
 }
+
+export default ProfileMenu

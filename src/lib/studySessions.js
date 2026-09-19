@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-export async function startStudySession(userId, documentId = null) {
+export const startStudySession = async (userId, documentId = null) => {
   const { data, error } = await supabase
     .from('study_sessions')
     .insert({ user_id: userId, document_id: documentId })
@@ -10,7 +10,7 @@ export async function startStudySession(userId, documentId = null) {
   return data
 }
 
-export async function endStudySession(sessionId, topicIds = []) {
+export const endStudySession = async (sessionId, topicIds = []) => {
   const { data, error } = await supabase
     .from('study_sessions')
     .update({ ended_at: new Date().toISOString() })
@@ -27,7 +27,7 @@ export async function endStudySession(sessionId, topicIds = []) {
   return data
 }
 
-export async function getRecentSessions(limit = 10) {
+export const getRecentSessions = async (limit = 10) => {
   const { data, error } = await supabase
     .from('study_sessions')
     .select('*, documents(title), study_session_topics(topics(name))')

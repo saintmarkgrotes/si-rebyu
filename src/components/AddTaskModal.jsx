@@ -3,14 +3,14 @@ import Modal from './Modal'
 import Input from './Input'
 import Button from './Button'
 
-function TaskForm({ onSubmit, onCancel }) {
+const TaskForm = ({ onSubmit, onCancel }) => {
   const [title, setTitle] = useState('')
   const [note, setNote] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!title.trim()) {
       setError('Give your task a title.')
@@ -73,10 +73,12 @@ function TaskForm({ onSubmit, onCancel }) {
 }
 
 // The form is only mounted while the modal is open, so it resets every time.
-export default function AddTaskModal({ open, onClose, onSubmit }) {
+const AddTaskModal = ({ open, onClose, onSubmit }) => {
   return (
     <Modal open={open} onClose={onClose} title="Add a study task">
       <TaskForm onSubmit={onSubmit} onCancel={onClose} />
     </Modal>
   )
 }
+
+export default AddTaskModal

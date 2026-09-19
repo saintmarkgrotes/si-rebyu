@@ -12,7 +12,7 @@ const iconProps = {
   'aria-hidden': true,
 }
 
-function MoonIcon() {
+const MoonIcon = () => {
   return (
     <svg {...iconProps}>
       <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
@@ -20,7 +20,7 @@ function MoonIcon() {
   )
 }
 
-function SunIcon() {
+const SunIcon = () => {
   return (
     <svg {...iconProps}>
       <circle cx="12" cy="12" r="4" />
@@ -29,7 +29,7 @@ function SunIcon() {
   )
 }
 
-export default function ThemeToggle() {
+const ThemeToggle = () => {
   const { resolved, toggleTheme } = useTheme()
   const isDark = resolved === 'dark'
 
@@ -45,3 +45,5 @@ export default function ThemeToggle() {
     </button>
   )
 }
+
+export default ThemeToggle

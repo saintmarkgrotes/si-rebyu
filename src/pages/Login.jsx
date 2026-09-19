@@ -5,7 +5,7 @@ import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
-const Login =()=> {
+const Login = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
@@ -17,7 +17,7 @@ const Login =()=> {
 
   const redirectTo = location.state?.from?.pathname || '/dashboard'
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -35,7 +35,7 @@ const Login =()=> {
     <div className="flex min-h-screen items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold text-ink">Sign in</h1>  
+          <h1 className="text-2xl font-semibold text-ink">Sign in</h1>
         </div>
 
         <Card>
@@ -73,4 +73,4 @@ const Login =()=> {
   )
 }
 
-export default Login;
+export default Login

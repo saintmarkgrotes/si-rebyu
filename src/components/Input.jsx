@@ -1,4 +1,4 @@
-export default function Input({ label, id, error, className = '', ...props }) {
+const Input = ({ label, id, error, className = '', ...props }) => {
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
@@ -17,3 +17,5 @@ export default function Input({ label, id, error, className = '', ...props }) {
     </div>
   )
 }
+
+export default Input

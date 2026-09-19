@@ -5,7 +5,7 @@ import { ThemeContext } from './themeContextObject'
 const STORAGE_KEY = 'si-rebyu-theme' // keep in sync with the script in index.html
 const DARK_QUERY = '(prefers-color-scheme: dark)'
 
-function readPreference() {
+const readPreference = () => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'light' || saved === 'dark' || saved === 'system') return saved
@@ -15,7 +15,7 @@ function readPreference() {
   return 'system'
 }
 
-export function ThemeProvider({ children }) {
+export const ThemeProvider = ({ children }) => {
   // preference: what the user chose ('light' | 'dark' | 'system')
   const [preference, setPreference] = useState(readPreference)
   const [systemDark, setSystemDark] = useState(

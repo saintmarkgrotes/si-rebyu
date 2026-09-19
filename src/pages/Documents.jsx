@@ -15,24 +15,28 @@ const Documents = () => {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
 
-  async function refresh() {
-    setLoading(true)
-    setError('')
+  useEffect(() => {
+  let active = true
+
+  const loadDocuments = async () => {
     try {
       const docs = await getDocuments()
-      setDocuments(docs)
+      if (active) setDocuments(docs)
     } catch (err) {
-      setError(err.message || 'Could not load your documents.')
+      if (active) setError(err.message || 'Could not load your documents.')
     } finally {
-      setLoading(false)
+      if (active) setLoading(false)
     }
   }
 
-  useEffect(() => {
-    refresh()
+  loadDocuments()
+
+    return () => {
+      active = false
+    }
   }, [])
 
-  function validateFile(file) {
+  const validateFile = (file) => {
     const ext = '.' + file.name.split('.').pop().toLowerCase()
     if (!ACCEPTED_TYPES.includes(ext)) {
       return 'Only PDF or Word files (.pdf, .doc, .docx) are allowed.'
@@ -43,7 +47,7 @@ const Documents = () => {
     return null
   }
 
-  async function handleFileChange(e) {
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0]
     e.target.value = '' // allow re-selecting the same file later
     if (!file) return
@@ -66,7 +70,7 @@ const Documents = () => {
     }
   }
 
-  async function handleDelete(doc) {
+  const handleDelete = async (doc) => {
     if (!confirm(`Delete "${doc.title}"? This can't be undone.`)) return
     try {
       await deleteDocument(doc.id, doc.storage_path)
@@ -118,7 +122,7 @@ const Documents = () => {
             <ul className="flex flex-col gap-3">
               {documents.map((doc) => (
                 <li key={doc.id}>
-                  <Card className="flex items-center justify-between !p-4">
+                  <Card className="flex items-center justify-between p-4!">
                     <div>
                       <p className="text-sm font-medium text-ink">{doc.title}</p>
                       <p className="mt-0.5 text-xs text-muted">
