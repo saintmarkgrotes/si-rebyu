@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import Card from '../components/Card'
@@ -7,8 +6,7 @@ import NavHeader from '../components/NavHeader'
 import StudyTasks from '../components/StudyTasks'
 
 const Dashboard = () => {
-  const { user, logout } = useAuth()
-  const navigate = useNavigate()
+  const { user } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -40,11 +38,6 @@ const Dashboard = () => {
     return () => { active = false }
   }, [])
 
-  function handleLogout() {
-    logout()
-    navigate('/login', { replace: true })
-  }
-
   return (
     <div className="min-h-screen bg-paper">
       <NavHeader />
@@ -55,7 +48,7 @@ const Dashboard = () => {
         </h1>
         <p className="mt-1 text-sm text-muted">Here's where your studying stands.</p>
 
-        {error && <p className="mt-6 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-6 text-sm text-danger">{error}</p>}
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <Card>

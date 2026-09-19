@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { uploadDocument, getDocuments, deleteDocument } from '../lib/documents'
 import Card from '../components/Card'
 import Button from '../components/Button'
+import NavHeader from '../components/NavHeader'
 
 const ACCEPTED_TYPES = ['.pdf', '.doc', '.docx']
 const MAX_SIZE_MB = 20
@@ -83,6 +84,7 @@ const Documents = () => {
 
   return (
     <div className="min-h-screen bg-paper">
+      <NavHeader />
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-semibold text-ink">Your documents</h1>
         <p className="mt-1 text-sm text-muted">
@@ -97,13 +99,13 @@ const Documents = () => {
               accept={ACCEPTED_TYPES.join(',')}
               onChange={handleFileChange}
               disabled={uploading}
-              className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-ink file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper hover:file:bg-neutral-800 disabled:opacity-50"
+              className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-ink file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper hover:file:bg-ink-hover disabled:opacity-50"
             />
           </label>
           {uploading && <p className="mt-3 text-sm text-muted">Uploading…</p>}
         </Card>
 
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-4 text-sm text-danger">{error}</p>}
 
         <div className="mt-8">
           {loading ? (
