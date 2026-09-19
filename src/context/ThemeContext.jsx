@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ThemeContext } from './themeContext'
+import { ThemeContext } from './themeContextObject'
 
 const STORAGE_KEY = 'si-rebyu-theme' // keep in sync with the script in index.html
 const DARK_QUERY = '(prefers-color-scheme: dark)'
