@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import Card from '../components/Card'
 import NavHeader from '../components/NavHeader'
+import StudyTasks from '../components/StudyTasks'
 
 const Dashboard = () => {
   const { user, logout } = useAuth()
@@ -70,6 +71,7 @@ const Dashboard = () => {
             <p className="mt-2 text-2xl font-semibold text-ink">{loading ? '—' : stats.topicCount}</p>
           </Card>
         </div>
+        <StudyTasks />
       </main>
     </div>
   )
