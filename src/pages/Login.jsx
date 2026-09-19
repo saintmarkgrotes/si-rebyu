@@ -61,7 +61,7 @@ const Login =()=> {
               required
             />
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-danger">{error}</p>}
 
             <Button type="submit" loading={loading} className="w-full">
               Sign in

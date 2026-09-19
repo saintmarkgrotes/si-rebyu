@@ -10,10 +10,10 @@ export default function Input({ label, id, error, className = '', ...props }) {
         id={id}
         className={`w-full rounded-md border px-3 py-2.5 text-sm text-ink placeholder:text-muted
           focus:outline-none focus-visible:outline-2 focus-visible:outline-ink
-          ${error ? 'border-red-500' : 'border-line'} ${className}`}
+          ${error ? 'border-danger' : 'border-line'} ${className}`}
         {...props}
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
     </div>
   )
 }

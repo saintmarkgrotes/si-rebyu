@@ -79,13 +79,13 @@ export default function StudyTasks() {
           onClick={() => setModalOpen(true)}
           aria-label="Add a task"
           title="Add a task"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-2xl leading-none text-paper transition-colors hover:bg-neutral-800"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-2xl leading-none text-paper transition-colors hover:bg-ink-hover"
         >
           +
         </button>
       </div>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-sm text-danger">{error}</p>}
 
       <div className="mt-4">
         {!loading && tasks.length === 0 ? (
@@ -132,7 +132,7 @@ export default function StudyTasks() {
                     type="button"
                     onClick={() => handleDelete(task)}
                     aria-label={`Delete "${task.title}"`}
-                    className="rounded-md px-2 py-1 text-lg leading-none text-muted transition-colors hover:bg-neutral-100 hover:text-ink"
+                    className="rounded-md px-2 py-1 text-lg leading-none text-muted transition-colors hover:bg-subtle hover:text-ink"
                   >
                     ×
                   </button>

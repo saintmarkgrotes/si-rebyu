@@ -1,20 +1,12 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import Button from './Button'
+import { NavLink } from 'react-router-dom'
+import ThemeToggle from './ThemeToggle'
+import ProfileMenu from './ProfileMenu'
 
 const linkBase = 'text-sm font-medium transition-colors'
 const linkClass = ({ isActive }) =>
   `${linkBase} ${isActive ? 'text-ink' : 'text-muted hover:text-ink'}`
 
 const NavHeader = () => {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
-
-  function handleLogout() {
-    logout()
-    navigate('/login', { replace: true })
-  }
-
   return (
     <header className="flex items-center justify-between border-b border-line px-6 py-4">
       <div className="flex items-center gap-6">
@@ -28,9 +20,10 @@ const NavHeader = () => {
           </NavLink>
         </nav>
       </div>
-      <Button variant="secondary" onClick={handleLogout}>
-        Log out
-      </Button>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <ProfileMenu />
+      </div>
     </header>
   )
 }

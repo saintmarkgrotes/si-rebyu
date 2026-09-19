@@ -19,7 +19,7 @@ export default function Modal({ open, onClose, title, children }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -36,7 +36,7 @@ export default function Modal({ open, onClose, title, children }) {
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="-mr-2 -mt-1 rounded-md px-2 py-1 text-xl leading-none text-muted transition-colors hover:bg-neutral-100 hover:text-ink"
+            className="-mr-2 -mt-1 rounded-md px-2 py-1 text-xl leading-none text-muted transition-colors hover:bg-subtle hover:text-ink"
           >
             ×
           </button>
