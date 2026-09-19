@@ -24,6 +24,23 @@
   color-scheme: dark; /* dark native controls: date picker, file input, scrollbars */
 }
 
+/* Theme toggle transition: the new theme is revealed by a circular clip-path
+   animated from JS (see ThemeContext). Disable the default cross-fade so the
+   old snapshot stays put underneath and the new one is drawn on top. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
 body {
   @apply bg-paper text-ink antialiased;
 }
