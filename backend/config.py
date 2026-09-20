@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     ai_provider: str = "gemini"
     ai_api_key: str = ""
     ai_model: str = ""
+    ai_requests_per_minute: int = 12  # keep below your model's free-tier limit
 
     @property
     def cors_origin_list(self) -> list[str]:
