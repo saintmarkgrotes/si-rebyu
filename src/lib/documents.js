@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const FILE_TYPES = { pdf: 'pdf', docx: 'docx' }
+const FILE_TYPES = { pdf: 'pdf', docx: 'docx', pptx: 'pptx' }
 
 // Storage keys can break on spaces/accents/symbols, so keep only safe characters.
 // The original name is still saved as the document title.
@@ -18,7 +18,7 @@ const toSafeFileName = (name) => {
 export const uploadDocument = async (file, userId) => {
   const ext = file.name.split('.').pop().toLowerCase()
   const fileType = FILE_TYPES[ext]
-  if (!fileType) throw new Error('Only PDF or Word (.docx) files are supported.')
+  if (!fileType) throw new Error('Only PDF, Word (.docx) or PowerPoint (.pptx) files are supported.')
 
   const filePath = `${userId}/${Date.now()}_${toSafeFileName(file.name)}`
   const { error: uploadError } = await supabase.storage.from('documents').upload(filePath, file)
