@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { uploadDocument, getDocuments, deleteDocument } from '../lib/documents'
+import { apiFetch } from '../lib/api'
 import Card from '../components/Card'
 import Button from '../components/Button'
 import NavHeader from '../components/NavHeader'
 
-const ACCEPTED_TYPES = ['.pdf', '.docx']
+const ACCEPTED_TYPES = ['.pdf', '.docx', '.pptx']
 const MAX_SIZE_MB = 20
 
 const Documents = () => {
@@ -36,10 +37,23 @@ const Documents = () => {
     }
   }, [])
 
+  // while any document is still being processed, refresh the list every few seconds
+  useEffect(() => {
+    if (!documents.some((d) => d.status === 'processing')) return undefined
+    const timer = setInterval(async () => {
+      try {
+        setDocuments(await getDocuments())
+      } catch {
+        // keep showing the last list; try again on the next tick
+      }
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [documents])
+
   const validateFile = (file) => {
     const ext = '.' + file.name.split('.').pop().toLowerCase()
     if (!ACCEPTED_TYPES.includes(ext)) {
-      return 'Only PDF or Word files (.pdf, .docx) are allowed.'
+      return 'Only PDF, Word or PowerPoint files (.pdf, .docx, .pptx) are allowed.'
     }
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       return `File is too large. Max size is ${MAX_SIZE_MB}MB.`
@@ -63,6 +77,10 @@ const Documents = () => {
     try {
       const doc = await uploadDocument(file, user.id)
       setDocuments((prev) => [doc, ...prev])
+      // ask the backend to read the file; the row's status updates as it works
+      apiFetch(`/documents/${doc.id}/process`, { method: 'POST' }).catch((err) => {
+        setError(err.message || 'Could not start processing this document.')
+      })
     } catch (err) {
       setError(err.message || 'Upload failed. Please try again.')
     } finally {
@@ -80,8 +98,18 @@ const Documents = () => {
     }
   }
 
+  const handleRetry = async (doc) => {
+    setError('')
+    try {
+      await apiFetch(`/documents/${doc.id}/process`, { method: 'POST' })
+      setDocuments(await getDocuments())
+    } catch (err) {
+      setError(err.message || 'Could not retry this document.')
+    }
+  }
+
   const statusLabel = {
-    processing: 'Generating questions…',
+    processing: 'Reading document…',
     ready: 'Ready',
     failed: 'Failed to process',
   }
@@ -92,7 +120,7 @@ const Documents = () => {
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-semibold text-ink">Your documents</h1>
         <p className="mt-1 text-sm text-muted">
-          Upload a PDF or Word file to generate study questions from it.
+          Upload a PDF, Word or PowerPoint file to generate study questions from it.
         </p>
 
         <Card className="mt-6">
@@ -129,10 +157,20 @@ const Documents = () => {
                         {statusLabel[doc.status] || doc.status} ·{' '}
                         {new Date(doc.created_at).toLocaleDateString()}
                       </p>
+                      {doc.status === 'failed' && doc.error_message && (
+                        <p className="mt-1 text-xs text-danger">{doc.error_message}</p>
+                      )}
                     </div>
-                    <Button variant="ghost" onClick={() => handleDelete(doc)}>
-                      Delete
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      {doc.status === 'failed' && (
+                        <Button variant="ghost" onClick={() => handleRetry(doc)}>
+                          Retry
+                        </Button>
+                      )}
+                      <Button variant="ghost" onClick={() => handleDelete(doc)}>
+                        Delete
+                      </Button>
+                    </div>
                   </Card>
                 </li>
               ))}
