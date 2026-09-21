@@ -190,7 +190,7 @@ def _validate_question(item, chunk, chunk_stems, allowed_types, allowed_topics) 
         return QuestionOut(
             type=qtype, question=question, choices=choices, correct_answer=correct,
             explanation=explanation, topic=topic, difficulty=_difficulty(item.get("difficulty")),
-            source=_resolve_source(item.get("source"), chunk),
+            source=_resolve_source(item.get("source"), chunk), chunk_index=chunk.index,
         )
     except ValidationError:
         return "did not match the expected format"
@@ -212,7 +212,7 @@ def _validate_flashcard(item, chunk, chunk_stems, allowed_topics) -> FlashcardOu
     try:
         return FlashcardOut(
             question=question, answer=answer, topic=topic, difficulty=_difficulty(item.get("difficulty")),
-            source=_resolve_source(item.get("source"), chunk),
+            source=_resolve_source(item.get("source"), chunk), chunk_index=chunk.index,
         )
     except ValidationError:
         return "did not match the expected format"

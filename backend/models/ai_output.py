@@ -12,6 +12,7 @@ class FlashcardOut(BaseModel):
     topic: str
     difficulty: Difficulty
     source: dict
+    chunk_index: int | None = None  # which chunk it came from, so it can link to the stored source text
 
 
 class QuestionOut(BaseModel):
@@ -23,6 +24,7 @@ class QuestionOut(BaseModel):
     topic: str
     difficulty: Difficulty
     source: dict
+    chunk_index: int | None = None
 
 
 class GenerationOptions(BaseModel):
