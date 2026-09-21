@@ -8,4 +8,10 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    // In dev, forward /api to the FastAPI backend so no CORS setup is needed locally.
+    proxy: {
+      '/api': 'http://localhost:8000',
+    },
+  },
 })
