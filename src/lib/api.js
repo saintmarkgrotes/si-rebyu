@@ -3,6 +3,17 @@ import { supabase } from './supabase'
 // Empty in local dev (Vite proxies /api). In production, set VITE_API_URL to the backend origin.
 const API_BASE = import.meta.env.VITE_API_URL || ''
 
+// FastAPI sends either a string, or (for invalid input) a list of {msg} objects.
+const messageFrom = (detail) => {
+  if (Array.isArray(detail)) {
+    return detail
+      .map((d) => (typeof d?.msg === 'string' ? d.msg.replace(/^Value error, /, '') : ''))
+      .filter(Boolean)
+      .join(' ')
+  }
+  return typeof detail === 'string' ? detail : ''
+}
+
 export class ApiError extends Error {
   constructor(message, status) {
     super(message)
@@ -40,7 +51,7 @@ export const apiFetch = async (path, { method = 'GET', body, auth = true, signal
 
   const payload = await res.json().catch(() => null)
   if (!res.ok) {
-    throw new ApiError(payload?.detail || `Request failed (${res.status}).`, res.status)
+    throw new ApiError(messageFrom(payload?.detail) || `Request failed (${res.status}).`, res.status)
   }
   return payload
 }

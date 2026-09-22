@@ -1,9 +1,10 @@
 import { supabase } from './supabase'
 
-export const startStudySession = async (userId, documentId = null) => {
+// `mode` and `studySetId` are optional so existing callers (a document-only session) keep working.
+export const startStudySession = async (userId, documentId = null, { mode = null, studySetId = null } = {}) => {
   const { data, error } = await supabase
     .from('study_sessions')
-    .insert({ user_id: userId, document_id: documentId })
+    .insert({ user_id: userId, document_id: documentId, mode, study_set_id: studySetId })
     .select()
     .single()
   if (error) throw error

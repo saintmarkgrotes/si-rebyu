@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
-const Modal = ({ open, onClose, title, children }) => {
+const SIZES = { md: 'max-w-md', lg: 'max-w-lg' }
+
+const Modal = ({ open, onClose, title, size = 'md', children }) => {
   useEffect(() => {
     if (!open) return
     const onKeyDown = (e) => {
@@ -28,7 +30,7 @@ const Modal = ({ open, onClose, title, children }) => {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="w-full max-w-md rounded-lg border border-line bg-paper p-6 shadow-xl"
+        className={`max-h-[calc(100vh-2rem)] w-full overflow-y-auto rounded-lg border border-line bg-paper p-6 shadow-xl ${SIZES[size]}`}
       >
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-lg font-semibold text-ink">{title}</h2>

@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { uploadDocument, getDocuments, deleteDocument } from '../lib/documents'
 import { apiFetch } from '../lib/api'
+import { getStudySets, deleteStudySet } from '../lib/studySets'
+import { DOCUMENT_STALE_MINUTES, STUDY_SET_STALE_MINUTES, isStale } from '../lib/generation'
 import Card from '../components/Card'
-import Button from '../components/Button'
 import NavHeader from '../components/NavHeader'
+import DocumentCard from '../components/documents/DocumentCard'
+import GenerateModal from '../components/documents/GenerateModal'
 
 const ACCEPTED_TYPES = ['.pdf', '.docx', '.pptx']
 const MAX_SIZE_MB = 20
@@ -12,6 +15,9 @@ const MAX_SIZE_MB = 20
 const Documents = () => {
   const { user } = useAuth()
   const [documents, setDocuments] = useState([])
+  const [studySets, setStudySets] = useState([])
+  const [generateFor, setGenerateFor] = useState(null) // the document whose settings modal is open
+  const [now, setNow] = useState(() => Date.now()) // refreshed on every poll, used to spot dead jobs
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
@@ -30,25 +36,43 @@ const Documents = () => {
     }
   }
 
+  const loadStudySets = async () => {
+    try {
+      const sets = await getStudySets()
+      if (active) setStudySets(sets)
+    } catch (err) {
+      if (active) setError(err.message || 'Could not load your study sets.')
+    }
+  }
+
   loadDocuments()
+  loadStudySets()
 
     return () => {
       active = false
     }
   }, [])
 
-  // while any document is still being processed, refresh the list every few seconds
+  // While a document is being read or a study set is being generated, refresh every few seconds.
+  // Jobs that have gone quiet for a long time are not waited for (the card offers Retry / Delete instead).
+  const busy =
+    documents.some((d) => d.status === 'processing' && !isStale(d, DOCUMENT_STALE_MINUTES, now)) ||
+    studySets.some((s) => s.status === 'generating' && !isStale(s, STUDY_SET_STALE_MINUTES, now))
+
   useEffect(() => {
-    if (!documents.some((d) => d.status === 'processing')) return undefined
+    if (!busy) return undefined
     const timer = setInterval(async () => {
       try {
-        setDocuments(await getDocuments())
+        const [docs, sets] = await Promise.all([getDocuments(), getStudySets()])
+        setDocuments(docs)
+        setStudySets(sets)
+        setNow(Date.now())
       } catch {
-        // keep showing the last list; try again on the next tick
+        // keep showing the last lists; try again on the next tick
       }
     }, 3000)
     return () => clearInterval(timer)
-  }, [documents])
+  }, [busy])
 
   const validateFile = (file) => {
     const ext = '.' + file.name.split('.').pop().toLowerCase()
@@ -93,8 +117,30 @@ const Documents = () => {
     try {
       await deleteDocument(doc.id, doc.storage_path)
       setDocuments((prev) => prev.filter((d) => d.id !== doc.id))
+      setStudySets((prev) => prev.filter((s) => s.document_id !== doc.id)) // the database removes them too
     } catch (err) {
       setError(err.message || 'Could not delete this document.')
+    }
+  }
+
+  const handleDeleteSet = async (set) => {
+    if (!confirm(`Delete "${set.title}"? Its flashcards and questions will be removed.`)) return
+    try {
+      await deleteStudySet(set.id)
+      setStudySets((prev) => prev.filter((s) => s.id !== set.id))
+    } catch (err) {
+      setError(err.message || 'Could not delete this study set.')
+    }
+  }
+
+  // The backend accepted the request; show the new set (it appears with its progress bar) and close the modal.
+  const handleStarted = async () => {
+    setGenerateFor(null)
+    try {
+      setStudySets(await getStudySets())
+      setNow(Date.now())
+    } catch {
+      // the next poll will pick it up
     }
   }
 
@@ -103,15 +149,10 @@ const Documents = () => {
     try {
       await apiFetch(`/documents/${doc.id}/process`, { method: 'POST' })
       setDocuments(await getDocuments())
+      setNow(Date.now())
     } catch (err) {
       setError(err.message || 'Could not retry this document.')
     }
-  }
-
-  const statusLabel = {
-    processing: 'Reading document…',
-    ready: 'Ready',
-    failed: 'Failed to process',
   }
 
   return (
@@ -120,7 +161,7 @@ const Documents = () => {
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-semibold text-ink">Your documents</h1>
         <p className="mt-1 text-sm text-muted">
-          Upload a PDF, Word or PowerPoint file to generate study questions from it.
+          Upload a PDF, Word or PowerPoint file, then generate flashcards and questions from it.
         </p>
 
         <Card className="mt-6">
@@ -150,34 +191,28 @@ const Documents = () => {
             <ul className="flex flex-col gap-3">
               {documents.map((doc) => (
                 <li key={doc.id}>
-                  <Card className="flex items-center justify-between p-4!">
-                    <div>
-                      <p className="text-sm font-medium text-ink">{doc.title}</p>
-                      <p className="mt-0.5 text-xs text-muted">
-                        {statusLabel[doc.status] || doc.status} ·{' '}
-                        {new Date(doc.created_at).toLocaleDateString()}
-                      </p>
-                      {doc.status === 'failed' && doc.error_message && (
-                        <p className="mt-1 text-xs text-danger">{doc.error_message}</p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {doc.status === 'failed' && (
-                        <Button variant="ghost" onClick={() => handleRetry(doc)}>
-                          Retry
-                        </Button>
-                      )}
-                      <Button variant="ghost" onClick={() => handleDelete(doc)}>
-                        Delete
-                      </Button>
-                    </div>
-                  </Card>
+                  <DocumentCard
+                    doc={doc}
+                    studySets={studySets.filter((s) => s.document_id === doc.id)}
+                    now={now}
+                    onGenerate={setGenerateFor}
+                    onRetry={handleRetry}
+                    onDelete={handleDelete}
+                    onDeleteSet={handleDeleteSet}
+                  />
                 </li>
               ))}
             </ul>
           )}
         </div>
       </main>
+
+      <GenerateModal
+        open={generateFor !== null}
+        doc={generateFor}
+        onClose={() => setGenerateFor(null)}
+        onStarted={handleStarted}
+      />
     </div>
   )
 }
