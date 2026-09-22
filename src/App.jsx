@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Documents from './pages/Documents'
 import Settings from './pages/Settings'
+import FlashcardStudy from './pages/FlashcardStudy'
+import Quiz from './pages/Quiz'
 
 const App = () => {
   return (
@@ -28,6 +30,22 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Documents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/study/:studySetId"
+            element={
+              <ProtectedRoute>
+                <FlashcardStudy />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/quiz/:studySetId"
+            element={
+              <ProtectedRoute>
+                <Quiz />
               </ProtectedRoute>
             }
           />
