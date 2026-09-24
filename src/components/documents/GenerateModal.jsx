@@ -66,11 +66,13 @@ const describeEstimate = (problem, current, blocked) => {
 
 const toggle = (list, value, on) => (on ? [...list, value] : list.filter((v) => v !== value))
 
-const GenerateForm = ({ doc, onClose, onStarted, estimateDelay }) => {
-  const [options, setOptions] = useState(DEFAULT_OPTIONS)
+const GenerateForm = ({ doc, onClose, onStarted, estimateDelay, initialTopic }) => {
+  const [options, setOptions] = useState(
+    initialTopic ? { ...DEFAULT_OPTIONS, topics: [initialTopic] } : DEFAULT_OPTIONS,
+  )
   const [title, setTitle] = useState('')
   const [topics, setTopics] = useState(null) // null while loading
-  const [allTopics, setAllTopics] = useState(true)
+  const [allTopics, setAllTopics] = useState(!initialTopic)
   const [estimate, setEstimate] = useState({ key: null })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -86,6 +88,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay }) => {
       active = false
     }
   }, [doc.id])
+
 
   const effective = { ...options, topics: allTopics ? [] : options.topics }
   const problem =
@@ -174,6 +177,11 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay }) => {
 
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-sm font-medium text-ink">Topics</legend>
+        {initialTopic && (
+          <p className="text-xs text-muted">
+            Pre-selected from your Dashboard: <span className="text-ink">{initialTopic}</span>
+          </p>
+        )}
         <Check
           label="All topics"
           checked={allTopics}
@@ -181,6 +189,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay }) => {
           onChange={(on) => setAllTopics(on)}
         />
         {!allTopics &&
+          topics &&
           topics.map((name) => (
             <div key={name} className="ml-6">
               <Check
@@ -229,9 +238,18 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay }) => {
 }
 
 // The form is only mounted while the modal is open, so it starts fresh every time.
-const GenerateModal = ({ open, doc, onClose, onStarted, estimateDelay = 400 }) => (
+const GenerateModal = ({ open, doc, onClose, onStarted, estimateDelay = 400, initialTopic = null }) => (
   <Modal open={open} onClose={onClose} title="Generate study material" size="lg">
-    {doc && <GenerateForm doc={doc} onClose={onClose} onStarted={onStarted} estimateDelay={estimateDelay} />}
+    {doc && (
+      <GenerateForm
+        key={doc.id}
+        doc={doc}
+        onClose={onClose}
+        onStarted={onStarted}
+        estimateDelay={estimateDelay}
+        initialTopic={initialTopic}
+      />
+    )}
   </Modal>
 )
 
