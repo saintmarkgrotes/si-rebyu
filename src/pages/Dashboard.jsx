@@ -1,41 +1,49 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { supabase } from '../lib/supabase'
-import Card from '../components/Card'
+import { getStudySets } from '../lib/studySets'
+import {
+  getDueFlashcardCount, getOverallAccuracy, getStudyStreak, getTopicsStudiedCount, getWeakTopics,
+} from '../lib/progress'
 import NavHeader from '../components/NavHeader'
 import StudyTasks from '../components/StudyTasks'
+import StatCard from '../components/dashboard/StatCard'
+import DueReviewCard from '../components/dashboard/DueReviewCard'
+import WeakTopicsList from '../components/dashboard/WeakTopicsList'
+import RecentStudySets from '../components/dashboard/RecentStudySets'
+
+const RECENT_LIMIT = 5
 
 const Dashboard = () => {
   const { user } = useAuth()
   const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [studySets, setStudySets] = useState(null)
+  const [weakTopics, setWeakTopics] = useState(null)
   const [error, setError] = useState('')
 
   useEffect(() => {
     let active = true
-    const loadStats = async () => {
-      setLoading(true)
-      setError('')
-      const [docs, sessions, topics] = await Promise.all([
-        supabase.from('documents').select('*', { count: 'exact', head: true }),
-        supabase.from('study_sessions').select('*', { count: 'exact', head: true }),
-        supabase.from('topics').select('*', { count: 'exact', head: true }),
-      ])
-      const firstError = docs.error || sessions.error || topics.error
-      if (!active) return
-      if (firstError) {
-        setError(firstError.message)
-      } else {
-        setStats({
-          documentCount: docs.count ?? 0,
-          sessionCount: sessions.count ?? 0,
-          topicCount: topics.count ?? 0,
-        })
+    const load = async () => {
+      try {
+        const [streak, accuracy, topicsStudied, dueCount, sets, weak] = await Promise.all([
+          getStudyStreak(),
+          getOverallAccuracy(),
+          getTopicsStudiedCount(),
+          getDueFlashcardCount(),
+          getStudySets(),
+          getWeakTopics(),
+        ])
+        if (!active) return
+        setStats({ streak, accuracy, topicsStudied, dueCount })
+        setStudySets(sets.slice(0, RECENT_LIMIT))
+        setWeakTopics(weak)
+      } catch (err) {
+        if (active) setError(err.message || 'Could not load your dashboard.')
       }
-      setLoading(false)
     }
-    loadStats()
-    return () => { active = false }
+    load()
+    return () => {
+      active = false
+    }
   }, [])
 
   return (
@@ -50,20 +58,18 @@ const Dashboard = () => {
 
         {error && <p className="mt-6 text-sm text-danger">{error}</p>}
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
-          <Card>
-            <p className="text-sm text-muted">Documents uploaded</p>
-            <p className="mt-2 text-2xl font-semibold text-ink">{loading ? '—' : stats.documentCount}</p>
-          </Card>
-          <Card>
-            <p className="text-sm text-muted">Study sessions</p>
-            <p className="mt-2 text-2xl font-semibold text-ink">{loading ? '—' : stats.sessionCount}</p>
-          </Card>
-          <Card>
-            <p className="text-sm text-muted">Topics studied</p>
-            <p className="mt-2 text-2xl font-semibold text-ink">{loading ? '—' : stats.topicCount}</p>
-          </Card>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <DueReviewCard count={stats?.dueCount ?? null} />
+          <StatCard label="Study streak" value={stats?.streak ?? null} suffix={stats?.streak === 1 ? ' day' : ' days'} />
+          <StatCard label="Quiz accuracy" value={stats?.accuracy?.percent ?? null} suffix="%" />
+          <StatCard label="Topics studied" value={stats?.topicsStudied ?? null} />
         </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <WeakTopicsList topics={weakTopics} />
+          <RecentStudySets studySets={studySets} />
+        </div>
+
         <StudyTasks />
       </main>
     </div>

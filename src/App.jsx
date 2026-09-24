@@ -8,6 +8,7 @@ import Documents from './pages/Documents'
 import Settings from './pages/Settings'
 import FlashcardStudy from './pages/FlashcardStudy'
 import Quiz from './pages/Quiz'
+import Review from './pages/Review'
 
 const App = () => {
   return (
@@ -46,6 +47,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Quiz />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/review"
+            element={
+              <ProtectedRoute>
+                <Review />
               </ProtectedRoute>
             }
           />
