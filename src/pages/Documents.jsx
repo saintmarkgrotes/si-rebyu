@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { uploadDocument, getDocuments, deleteDocument } from '../lib/documents'
 import { apiFetch } from '../lib/api'
 import { getStudySets, deleteStudySet } from '../lib/studySets'
+import { getDocumentsForTopic } from '../lib/progress'
 import { DOCUMENT_STALE_MINUTES, STUDY_SET_STALE_MINUTES, isStale } from '../lib/generation'
 import Card from '../components/Card'
 import NavHeader from '../components/NavHeader'
@@ -14,7 +16,10 @@ const MAX_SIZE_MB = 20
 
 const Documents = () => {
   const { user } = useAuth()
+  const [searchParams] = useSearchParams()
+  const topicFilter = searchParams.get('topic')
   const [documents, setDocuments] = useState([])
+  const [topicDocIds, setTopicDocIds] = useState(null) // null = no filter active, or still loading it
   const [studySets, setStudySets] = useState([])
   const [generateFor, setGenerateFor] = useState(null) // the document whose settings modal is open
   const [now, setNow] = useState(() => Date.now()) // refreshed on every poll, used to spot dead jobs
@@ -52,6 +57,20 @@ const Documents = () => {
       active = false
     }
   }, [])
+
+  // Note: if the filter changes from one topic straight to another without the page remounting in
+  // between, the old topic's results can flash briefly before the new ones load. In practice this
+  // page is only ever reached with one topic at a time (from a Dashboard link), so it isn't a real path.
+  useEffect(() => {
+    if (!topicFilter) return undefined
+    let active = true
+    getDocumentsForTopic(topicFilter)
+      .then((docs) => active && setTopicDocIds(new Set(docs.map((d) => d.id))))
+      .catch((err) => active && setError(err.message || 'Could not filter by topic.'))
+    return () => {
+      active = false
+    }
+  }, [topicFilter])
 
   // While a document is being read or a study set is being generated, refresh every few seconds.
   // Jobs that have gone quiet for a long time are not waited for (the card offers Retry / Delete instead).
@@ -155,6 +174,9 @@ const Documents = () => {
     }
   }
 
+  // topicDocIds can be left over from a previous filter; it only applies while a filter is active.
+  const visibleDocuments = topicFilter && topicDocIds ? documents.filter((d) => topicDocIds.has(d.id)) : documents
+
   return (
     <div className="min-h-screen bg-paper">
       <NavHeader />
@@ -180,16 +202,27 @@ const Documents = () => {
 
         {error && <p className="mt-4 text-sm text-danger">{error}</p>}
 
+        {topicFilter && (
+          <p className="mt-4 text-sm text-muted">
+            Showing documents about <span className="text-ink">{topicFilter}</span> ·{' '}
+            <Link to="/documents" className="underline-offset-2 hover:underline">
+              Clear filter
+            </Link>
+          </p>
+        )}
+
         <div className="mt-8">
-          {loading ? (
+          {loading || (topicFilter && topicDocIds === null) ? (
             <p className="text-sm text-muted">Loading your documents…</p>
-          ) : documents.length === 0 ? (
+          ) : visibleDocuments.length === 0 ? (
             <p className="text-sm text-muted">
-              No documents yet. Upload one above to get started.
+              {topicFilter
+                ? `No documents found about "${topicFilter}".`
+                : 'No documents yet. Upload one above to get started.'}
             </p>
           ) : (
             <ul className="flex flex-col gap-3">
-              {documents.map((doc) => (
+              {visibleDocuments.map((doc) => (
                 <li key={doc.id}>
                   <DocumentCard
                     doc={doc}
@@ -212,6 +245,7 @@ const Documents = () => {
         doc={generateFor}
         onClose={() => setGenerateFor(null)}
         onStarted={handleStarted}
+        initialTopic={topicFilter}
       />
     </div>
   )
