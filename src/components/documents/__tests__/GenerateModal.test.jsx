@@ -159,3 +159,26 @@ describe('GenerateModal', () => {
     expect(startGeneration).not.toHaveBeenCalled()
   })
 })
+
+describe('GenerateModal: initialTopic', () => {
+  it('pre-selects the given topic instead of All topics', async () => {
+    getDocumentTopics.mockResolvedValue(['VLAN', 'Trunking'])
+    setup({ initialTopic: 'VLAN' })
+    expect(await screen.findByRole('checkbox', { name: 'All topics' })).not.toBeChecked()
+    expect(await screen.findByRole('checkbox', { name: 'VLAN' })).toBeChecked()
+    expect(screen.getByText('VLAN', { selector: 'span' })).toBeInTheDocument()
+  })
+
+  it('estimates using only the pre-selected topic from the start', async () => {
+    getDocumentTopics.mockResolvedValue(['VLAN'])
+    setup({ initialTopic: 'VLAN' })
+    await waitFor(() => expect(estimateGeneration).toHaveBeenCalled())
+    const [, payload] = estimateGeneration.mock.calls.at(-1)
+    expect(payload.topics).toEqual(['VLAN'])
+  })
+
+  it('with no initialTopic, defaults to All topics as before', () => {
+    setup()
+    expect(screen.getByRole('checkbox', { name: 'All topics' })).toBeChecked()
+  })
+})

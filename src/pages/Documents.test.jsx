@@ -1,6 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
+import { getDocumentsForTopic } from '../lib/progress'
 import { ThemeProvider } from '../context/ThemeContext'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Documents from './Documents'
@@ -11,6 +12,7 @@ import { apiFetch } from '../lib/api'
 vi.mock('../lib/documents')
 vi.mock('../lib/studySets')
 vi.mock('../lib/api')
+vi.mock('../lib/progress')
 vi.mock('../context/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
 
 const now = () => new Date().toISOString()
@@ -28,6 +30,15 @@ const Wrapper = ({ children }) => (
 
 const renderPage = () => render(<Documents />, { wrapper: Wrapper })
 
+const renderWithTopic = (topic) => {
+  const WithTopic = ({ children }) => (
+    <MemoryRouter initialEntries={[`/documents?topic=${encodeURIComponent(topic)}`]}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </MemoryRouter>
+  )
+  return render(<Documents />, { wrapper: WithTopic })
+}
+
 beforeEach(() => {
   vi.resetAllMocks()
   window.confirm = vi.fn(() => true)
@@ -36,6 +47,7 @@ beforeEach(() => {
   getDocumentTopics.mockResolvedValue([])
   estimateGeneration.mockResolvedValue({ planned_requests: 2, estimated_seconds: 10 })
   apiFetch.mockResolvedValue({ started: true, status: 'processing' })
+  getDocumentsForTopic.mockResolvedValue([])
 })
 
 describe('Documents page', () => {
@@ -121,5 +133,51 @@ describe('Documents page', () => {
     await user.click(screen.getByRole('button', { name: 'Retry Networking.pdf' }))
     await waitFor(() => expect(apiFetch).toHaveBeenCalledWith('/documents/d1/process', { method: 'POST' }))
     expect(await screen.findByText(/Reading document…/)).toBeInTheDocument()
+  })
+})
+
+describe('Documents page: topic filter', () => {
+  it('with no topic in the URL, all documents show and no banner appears', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' }), readyDoc({ id: 'd2', title: 'B.pdf' })])
+    renderPage()
+    expect(await screen.findByText('A.pdf')).toBeInTheDocument()
+    expect(screen.getByText('B.pdf')).toBeInTheDocument()
+    expect(getDocumentsForTopic).not.toHaveBeenCalled()
+  })
+
+  it('with a topic in the URL, only matching documents show, with a banner and clear link', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' }), readyDoc({ id: 'd2', title: 'B.pdf' })])
+    getDocumentsForTopic.mockResolvedValue([{ id: 'd1', title: 'A.pdf', status: 'ready' }])
+    renderWithTopic('VLAN')
+    expect(await screen.findByText('A.pdf')).toBeInTheDocument()
+    expect(screen.queryByText('B.pdf')).not.toBeInTheDocument()
+    expect(getDocumentsForTopic).toHaveBeenCalledWith('VLAN')
+    expect(screen.getByText('VLAN')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Clear filter' })).toHaveAttribute('href', '/documents')
+  })
+
+  it('says so when no document matches the topic', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' })])
+    getDocumentsForTopic.mockResolvedValue([])
+    renderWithTopic('Obscure topic')
+    expect(await screen.findByText(/No documents found about "Obscure topic"/)).toBeInTheDocument()
+  })
+
+  it('opening Generate while filtered passes the topic through to the modal', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' })])
+    getDocumentsForTopic.mockResolvedValue([{ id: 'd1', title: 'A.pdf', status: 'ready' }])
+    getDocumentTopics.mockResolvedValue(['VLAN', 'Trunking'])
+    const user = userEvent.setup()
+    renderWithTopic('VLAN')
+    await user.click(await screen.findByRole('button', { name: 'Generate' }))
+    const dialog = await screen.findByRole('dialog')
+    expect(await within(dialog).findByRole('checkbox', { name: 'VLAN' })).toBeChecked()
+  })
+
+  it('a failed topic lookup shows an error but does not crash the page', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' })])
+    getDocumentsForTopic.mockRejectedValue(new Error('Row level security denied'))
+    renderWithTopic('VLAN')
+    expect(await screen.findByText('Row level security denied')).toBeInTheDocument()
   })
 })
