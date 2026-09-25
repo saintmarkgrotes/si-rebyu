@@ -67,3 +67,19 @@ describe('submitReview', () => {
     expect(supabase.from).not.toHaveBeenCalled()
   })
 })
+
+describe('getStudySet: not-found errors read clearly', () => {
+  it('turns a PostgREST "no row" error into a friendly not-found message', async () => {
+    supabase.from.mockReturnValue(
+      chain({ data: null, error: { code: 'PGRST116', message: 'JSON object requested, multiple (or no) rows returned' } }),
+    )
+    await expect(getStudySet('missing')).rejects.toMatchObject({
+      message: 'This study set could not be found. It may have been deleted, or you may not have access to it.',
+    })
+  })
+
+  it('leaves an unrelated error message untouched', async () => {
+    supabase.from.mockReturnValue(chain({ data: null, error: { message: 'Your session has expired.' } }))
+    await expect(getStudySet('s1')).rejects.toMatchObject({ message: 'Your session has expired.' })
+  })
+})

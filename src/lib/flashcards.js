@@ -1,9 +1,18 @@
 import { supabase } from './supabase'
+import { friendlyRowError } from './errors'
 import { nextReviewState, reviewLogEntry } from './sm2'
 
 export const getStudySet = async (studySetId) => {
   const { data, error } = await supabase.from('study_sets').select('*').eq('id', studySetId).single()
-  if (error) throw error
+  if (error) {
+    throw new Error(
+      friendlyRowError(
+        error,
+        'This study set could not be found. It may have been deleted, or you may not have access to it.',
+        'Could not load this study set.',
+      ),
+    )
+  }
   return data
 }
 
