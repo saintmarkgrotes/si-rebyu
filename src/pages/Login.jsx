@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
 const Login = () => {
-  const { login } = useAuth()
+  const { login, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -16,6 +16,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
 
   const redirectTo = location.state?.from?.pathname || '/dashboard'
+
+  // Already signed in (e.g. a bookmark to /login, or a bad link that bounced here): skip the form.
+  if (!authLoading && user) return <Navigate to={redirectTo} replace />
 
   const handleSubmit = async (e) => {
     e.preventDefault()
