@@ -143,6 +143,14 @@ describe('Quiz', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Row not found')
   })
 
+  it('a load failure offers a way back to Documents', async () => {
+    getStudySet.mockRejectedValue(new Error('Row not found'))
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(await screen.findByRole('button', { name: 'Back to documents' }))
+    expect(navigateSpy).toHaveBeenCalledWith('/documents')
+  })
+
   it('a failed attempt log does not block moving to the next question', async () => {
     getStudySetQuestions.mockResolvedValue([ident('i1'), ident('i2')])
     submitAttempt.mockRejectedValue(new Error('offline'))

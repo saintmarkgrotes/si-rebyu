@@ -2,7 +2,7 @@ import Card from '../Card'
 import Button from '../Button'
 import { pluralize } from '../../lib/generation'
 
-const SessionSummary = ({ reviewed, correct, onDone }) => {
+const SessionSummary = ({ reviewed, correct, onDone, doneLabel = 'Back to documents' }) => {
   const accuracy = reviewed ? Math.round((correct / reviewed) * 100) : 0
   return (
     <Card className="text-center">
@@ -12,7 +12,7 @@ const SessionSummary = ({ reviewed, correct, onDone }) => {
         {reviewed > 0 && <> and got {accuracy}% right the first time</>}.
       </p>
       <Button className="mt-6" onClick={onDone}>
-        Back to documents
+        {doneLabel}
       </Button>
     </Card>
   )

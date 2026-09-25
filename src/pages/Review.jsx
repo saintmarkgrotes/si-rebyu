@@ -22,6 +22,7 @@ const Review = () => {
       emptyMessage="No cards are due for review right now. Nice work — check back later."
       loadErrorMessage="Could not load your review queue."
       onDone={() => navigate('/dashboard')}
+      doneLabel="Back to dashboard"
     />
   )
 }

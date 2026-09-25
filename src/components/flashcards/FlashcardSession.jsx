@@ -14,7 +14,7 @@ import SessionSummary from './SessionSummary'
 // and the session come from, which `loadSession` supplies.
 //
 // `loadSession()` resolves to { title, cards, session }, with the study_sessions row already started.
-const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMessage, onDone }) => {
+const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMessage, onDone, doneLabel = 'Back to documents' }) => {
   const { user } = useAuth()
 
   const [title, setTitle] = useState(defaultTitle)
@@ -92,9 +92,18 @@ const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMe
         <h1 className="text-2xl font-semibold text-ink">{title}</h1>
 
         {error && (
-          <p role="alert" className="mt-4 text-sm text-danger">
-            {error}
-          </p>
+          <div className="mt-4">
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+            <button
+              type="button"
+              onClick={handleDone}
+              className="mt-2 text-sm text-ink underline-offset-2 hover:underline"
+            >
+              {doneLabel}
+            </button>
+          </div>
         )}
 
         {queue === null && !error && <p className="mt-8 text-sm text-muted">Loading…</p>}
@@ -121,7 +130,7 @@ const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMe
 
         {queue !== null && total > 0 && !card && (
           <div className="mt-8">
-            <SessionSummary reviewed={stats.reviewed} correct={stats.correct} onDone={handleDone} />
+            <SessionSummary reviewed={stats.reviewed} correct={stats.correct} onDone={handleDone} doneLabel={doneLabel} />
           </div>
         )}
       </main>

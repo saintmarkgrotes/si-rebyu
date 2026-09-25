@@ -101,3 +101,34 @@ describe('FlashcardSession', () => {
     expect(endStudySession).toHaveBeenCalledWith('session-1')
   })
 })
+
+describe('FlashcardSession: error state offers a way back', () => {
+  it('a load failure shows a back link using the given label, which calls onDone', async () => {
+    const onDone = vi.fn()
+    const user = userEvent.setup()
+    renderSession({
+      loadSession: vi.fn().mockRejectedValue(new Error('Row not found')),
+      onDone,
+      doneLabel: 'Back to dashboard',
+    })
+    const link = await screen.findByRole('button', { name: 'Back to dashboard' })
+    await user.click(link)
+    expect(onDone).toHaveBeenCalled()
+  })
+
+  it('defaults to "Back to documents" when no doneLabel is given', async () => {
+    renderSession({ loadSession: vi.fn().mockRejectedValue(new Error('')) })
+    expect(await screen.findByRole('button', { name: 'Back to documents' })).toBeInTheDocument()
+  })
+})
+
+describe('FlashcardSession: the finished-session button also respects doneLabel', () => {
+  it('shows the given label instead of the default', async () => {
+    const user = userEvent.setup()
+    renderSession({ doneLabel: 'Back to dashboard' })
+    await screen.findByText('What is a VLAN?')
+    await user.click(screen.getByText('What is a VLAN?'))
+    await user.click(screen.getByRole('button', { name: 'Good' }))
+    expect(await screen.findByRole('button', { name: 'Back to dashboard' })).toBeInTheDocument()
+  })
+})

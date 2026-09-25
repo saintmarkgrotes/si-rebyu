@@ -92,9 +92,18 @@ const Quiz = () => {
         <h1 className="text-2xl font-semibold text-ink">{studySet?.title || 'Quiz'}</h1>
 
         {error && (
-          <p role="alert" className="mt-4 text-sm text-danger">
-            {error}
-          </p>
+          <div className="mt-4">
+            <p role="alert" className="text-sm text-danger">
+              {error}
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate('/documents')}
+              className="mt-2 text-sm text-ink underline-offset-2 hover:underline"
+            >
+              Back to documents
+            </button>
+          </div>
         )}
 
         {questions === null && !error && <p className="mt-8 text-sm text-muted">Loading…</p>}
