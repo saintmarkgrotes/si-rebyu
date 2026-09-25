@@ -180,4 +180,13 @@ describe('Documents page: topic filter', () => {
     renderWithTopic('VLAN')
     expect(await screen.findByText('Row level security denied')).toBeInTheDocument()
   })
+
+  it('a failed topic lookup falls back to the full document list instead of loading forever', async () => {
+    getDocuments.mockResolvedValue([readyDoc({ id: 'd1', title: 'A.pdf' }), readyDoc({ id: 'd2', title: 'B.pdf' })])
+    getDocumentsForTopic.mockRejectedValue(new Error('offline'))
+    renderWithTopic('VLAN')
+    expect(await screen.findByText('A.pdf')).toBeInTheDocument()
+    expect(screen.getByText('B.pdf')).toBeInTheDocument()
+    expect(screen.queryByText('Loading your documents…')).not.toBeInTheDocument()
+  })
 })

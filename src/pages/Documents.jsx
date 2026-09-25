@@ -20,6 +20,7 @@ const Documents = () => {
   const topicFilter = searchParams.get('topic')
   const [documents, setDocuments] = useState([])
   const [topicDocIds, setTopicDocIds] = useState(null) // null = no filter active, or still loading it
+  const [topicFilterFailed, setTopicFilterFailed] = useState(false)
   const [studySets, setStudySets] = useState([])
   const [generateFor, setGenerateFor] = useState(null) // the document whose settings modal is open
   const [now, setNow] = useState(() => Date.now()) // refreshed on every poll, used to spot dead jobs
@@ -66,7 +67,13 @@ const Documents = () => {
     let active = true
     getDocumentsForTopic(topicFilter)
       .then((docs) => active && setTopicDocIds(new Set(docs.map((d) => d.id))))
-      .catch((err) => active && setError(err.message || 'Could not filter by topic.'))
+      .catch((err) => {
+        if (!active) return
+        // Fail open: show every document rather than leaving the page stuck on "loading" forever.
+        // The error banner still explains that the filter itself couldn't be applied.
+        setError(err.message || 'Could not filter by topic.')
+        setTopicFilterFailed(true)
+      })
     return () => {
       active = false
     }
@@ -174,8 +181,11 @@ const Documents = () => {
     }
   }
 
-  // topicDocIds can be left over from a previous filter; it only applies while a filter is active.
-  const visibleDocuments = topicFilter && topicDocIds ? documents.filter((d) => topicDocIds.has(d.id)) : documents
+  // topicDocIds can be left over from a previous filter; it only applies while a filter is active
+  // and actually succeeded. A failed lookup falls back to the full list (see the effect above).
+
+  const visibleDocuments =
+    topicFilter && topicDocIds && !topicFilterFailed ? documents.filter((d) => topicDocIds.has(d.id)) : documents
 
   return (
     <div className="min-h-screen bg-paper">
@@ -212,7 +222,7 @@ const Documents = () => {
         )}
 
         <div className="mt-8">
-          {loading || (topicFilter && topicDocIds === null) ? (
+          {loading || (topicFilter && topicDocIds === null && !topicFilterFailed) ? (
             <p className="text-sm text-muted">Loading your documents…</p>
           ) : visibleDocuments.length === 0 ? (
             <p className="text-sm text-muted">
