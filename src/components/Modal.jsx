@@ -1,8 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const SIZES = { md: 'max-w-md', lg: 'max-w-lg' }
 
 const Modal = ({ open, onClose, title, size = 'md', children }) => {
+  const dialogRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return
+    const opener = document.activeElement
+    const dialog = dialogRef.current
+    const focusableElements = () => Array.from(dialog.querySelectorAll(
+      'a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]',
+    )).filter((element) => (
+      element.tabIndex >= 0 && !element.matches(':disabled') &&
+      !element.closest('[hidden], [inert]') &&
+      getComputedStyle(element).display !== 'none' &&
+      getComputedStyle(element).visibility !== 'hidden'
+    ))
+
+    const onKeyDown = (event) => {
+      if (event.key !== 'Tab') return
+      const elements = focusableElements()
+      const first = elements[0] ?? dialog
+      const last = elements.at(-1) ?? dialog
+      const active = document.activeElement
+      if (!elements.includes(active) || (event.shiftKey ? active === first : active === last)) {
+        event.preventDefault()
+        const target = event.shiftKey ? last : first
+        target.focus()
+      }
+    }
+
+    const initialFocus = focusableElements()[0] ?? dialog
+    initialFocus.focus()
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      if (opener?.isConnected) opener.focus()
+    }
+  }, [open])
+
   useEffect(() => {
     if (!open) return
     const onKeyDown = (e) => {
@@ -27,6 +64,8 @@ const Modal = ({ open, onClose, title, size = 'md', children }) => {
       }}
     >
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-label={title}
