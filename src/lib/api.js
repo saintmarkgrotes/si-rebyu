@@ -1,7 +1,8 @@
 import { supabase } from './supabase'
 
 // Empty in local dev (Vite proxies /api). In production, set VITE_API_URL to the backend origin.
-const API_BASE = import.meta.env.VITE_API_URL || ''
+// A trailing slash is an easy thing to paste by accident and would produce "//api/..." URLs.
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '')
 
 // FastAPI sends either a string, or (for invalid input) a list of {msg} objects.
 const messageFrom = (detail) => {

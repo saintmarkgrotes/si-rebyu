@@ -75,3 +75,14 @@ def test_cors_allows_configured_origin_only():
         headers={"Origin": "http://evil.example", "Access-Control-Request-Method": "GET"},
     )
     assert "access-control-allow-origin" not in bad.headers
+
+
+def test_cors_origin_trailing_slash_is_ignored():
+    from config import Settings
+
+    s = Settings(
+        supabase_url="https://example.supabase.co",
+        supabase_anon_key="k",
+        cors_origins="https://app.example.com/, http://localhost:5173",
+    )
+    assert s.cors_origin_list == ["https://app.example.com", "http://localhost:5173"]
