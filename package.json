@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "vitest run",
+    "test": "vitest run && npm run test:database",
+    "test:database": "node --test scripts/database.test.js",
     "test:watch": "vitest",
     "dev": "vite",
     "build": "vite build",
@@ -20,6 +21,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
