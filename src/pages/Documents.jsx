@@ -183,7 +183,6 @@ const Documents = () => {
 
   // topicDocIds can be left over from a previous filter; it only applies while a filter is active
   // and actually succeeded. A failed lookup falls back to the full list (see the effect above).
-
   const visibleDocuments =
     topicFilter && topicDocIds && !topicFilterFailed ? documents.filter((d) => topicDocIds.has(d.id)) : documents
 
