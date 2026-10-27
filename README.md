@@ -1,16 +1,47 @@
-# React + Vite
+# si-rebyu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered study platform. Upload a PDF, Word, or PowerPoint document and generate flashcards and
+quiz questions from it with Gemini, then study with spaced repetition (SM-2) and track your progress
+over time.
 
-Currently, two official plugins are available:
+## How it's built
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Frontend:** React + Vite, Supabase for auth/database/storage, Tailwind for styling.
+- **Backend:** FastAPI (Python), responsible only for document processing and AI generation — the
+  AI key never touches the browser. Everything else (reading data, flashcards, quizzes) talks to
+  Supabase directly from the frontend, protected by Row Level Security.
+- **Database:** PostgreSQL via Supabase, with migrations in `supabase/migrations/`.
 
-## React Compiler
+## Run it locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+You'll need a Supabase project and a Gemini API key. See `.env.example` (frontend) and
+`backend/.env.example` (backend) for what to set, and `backend/README.md` for backend-specific
+setup and testing.
 
-## Expanding the ESLint configuration
+```bash
+# frontend
+cp .env.example .env.local   # fill in your Supabase project's URL and anon key
+npm install
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# backend (separate terminal)
+cd backend
+cp .env.example .env         # fill in Supabase + Gemini values
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements-dev.txt
+uvicorn main:app --reload --port 8000
+```
+
+Vite proxies `/api` to `localhost:8000` in dev, so both need to be running together.
+
+## Test
+
+```bash
+npm test                               # frontend — 260 tests
+cd backend && python -m pytest         # backend — 190 tests
+```
+
+## Deploying
+
+See `DEPLOYMENT.md` for the full walkthrough: hosting the backend, hosting the frontend, and
+connecting them to a production Supabase project.
