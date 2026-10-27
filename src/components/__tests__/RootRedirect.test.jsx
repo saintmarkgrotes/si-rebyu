@@ -43,3 +43,4 @@ describe('RootRedirect', () => {
     expect(screen.getByText('Dashboard page')).toBeInTheDocument()
   })
 })
+1
