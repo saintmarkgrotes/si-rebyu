@@ -1,0 +1,13 @@
+.env
+.env.*
+.venv/
+venv/
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+tests/
+scripts/
+worker.py
+Dockerfile
+result*.json
+hard*.json

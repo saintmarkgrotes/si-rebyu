@@ -1,0 +1,10 @@
+backend/
+supabase/
+scripts/*.test.mjs
+deploy/
+.github/
+.env
+.env.*
+**/*.test.*
+**/__tests__/
+src/test/
