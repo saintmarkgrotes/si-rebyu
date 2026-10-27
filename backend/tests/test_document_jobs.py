@@ -84,6 +84,8 @@ def processed(db, d):
 @pytest.mark.parametrize(
     "file_type,data,mime_part",
     [("pdf", pdf_bytes(), "pdf"), ("docx", make_docx(), "wordprocessingml"), ("pptx", make_pptx(), "presentationml")],
+    # Keep binary data out of test IDs and Windows' PYTEST_CURRENT_TEST variable.
+    ids=["pdf", "docx", "pptx"],
 )
 def test_each_format_ends_ready_with_chunks_and_details(file_type, data, mime_part):
     d = doc(file_type=file_type, path=f"u1/file.{file_type}")
