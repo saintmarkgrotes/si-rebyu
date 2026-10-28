@@ -119,7 +119,7 @@ const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMe
             <p className="text-sm text-muted-foreground">
               Card {position} of {total}
             </p>
-            <Flashcard front={card.front} back={card.back} revealed={revealed} onReveal={() => setRevealed(true)} />
+            <Flashcard key={card.id} front={card.front} back={card.back} revealed={revealed} onReveal={setRevealed} />
             {revealed ? (
               <RatingButtons onRate={handleRate} disabled={submitting} />
             ) : (
