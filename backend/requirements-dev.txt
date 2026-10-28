@@ -1,3 +1,5 @@
 -r requirements.txt
-pytest>=8.0
-reportlab>=4.0
+pytest==9.2.0
+reportlab==5.1.0
+# Starlette's TestClient deprecates its fallback to the original httpx package.
+httpx2==2.16.0
