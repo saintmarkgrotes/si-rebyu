@@ -248,14 +248,14 @@ export default function FlipCard({
     >
       {shadow ? (
         <motion.span
-          className="pointer-events-none absolute inset:[12%_9%_-5%] rounded-(--fc-radius) [background:color-mix(in_srgb,var(--fc-shadow)_calc(var(--fc-shadow-o)*100%),transparent)] filter-[blur(22px)]"
+          className="pointer-events-none absolute inset-[12%_9%_-5%] rounded-(--fc-radius) [background:color-mix(in_srgb,var(--fc-shadow)_calc(var(--fc-shadow-o)*100%),transparent)] filter-[blur(22px)]"
           aria-hidden="true"
           style={axis === 'x' ? { scaleY: spread, opacity: shade } : { scaleX: spread, opacity: shade }}
         />
       ) : null}
       <motion.div className="absolute inset-0 transform-3d" style={reduce ? undefined : rotorStyle}>
         <div
-          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-date-fade:[transition:opacity_200ms_ease] group-data-[fade=front]:opacity-100!"
+          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-data-fade:[transition:opacity_200ms_ease] group-data-[fade=front]:opacity-100!"
           aria-hidden={shown}
           inert={shown}
         >
@@ -268,7 +268,7 @@ export default function FlipCard({
           ) : null}
         </div>
         <div
-          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-date-fade:[transition:opacity_200ms_ease] transform-[rotate(180deg)] group-data-[axis=x]:transform-[rotate(180deg)] group-data-fade:transform-none! group-data-[fade=back]:opacity-100!"
+          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-data-fade:[transition:opacity_200ms_ease] [transform:rotateY(180deg)] group-data-[axis=x]:[transform:rotateX(180deg)] group-data-fade:transform-none! group-data-[fade=back]:opacity-100!"
           aria-hidden={!shown}
           inert={!shown}
         >
