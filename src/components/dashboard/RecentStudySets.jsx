@@ -3,7 +3,7 @@ import Card from '../Card'
 import { countsSummary } from '../../lib/generation'
 
 const RecentStudySets = ({ studySets }) => (
-  <Card>
+  <Card elevated>
     <h3 className="text-sm font-medium text-ink">Recent study sets</h3>
     {studySets === null && <p className="mt-3 text-sm text-muted-foreground">Loading…</p>}
     {studySets !== null && studySets.length === 0 && (

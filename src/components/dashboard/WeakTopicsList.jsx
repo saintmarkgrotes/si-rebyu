@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import Card from '../Card'
 
 const WeakTopicsList = ({ topics }) => (
-  <Card>
+  <Card elevated>
     <h3 className="text-sm font-medium text-ink">Weak topics</h3>
     {topics === null && <p className="mt-3 text-sm text-muted-foreground">Loading…</p>}
     {topics !== null && topics.length === 0 && (
