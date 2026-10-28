@@ -19,7 +19,7 @@ const Flashcard = ({ front, back, revealed, onReveal }) => (
         <p className="text-lg text-ink">{back}</p>
       </div>
     ) : (
-      <span className="text-sm text-muted">Click to show the answer</span>
+      <span className="text-sm text-muted-foreground">Click to show the answer</span>
     )}
   </div>
 )

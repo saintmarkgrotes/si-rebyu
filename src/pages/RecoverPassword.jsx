@@ -50,10 +50,10 @@ export default function RecoverPassword() {
               <Input id="confirm-password" type="password" label="Confirm new password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
             </> : <Input id="email" type="email" label="Email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />}
             {error && <p role="alert" className="text-sm text-danger">{error}</p>}
-            {message && <p role="status" className="text-sm text-muted">{message}</p>}
+            {message && <p role="status" className="text-sm text-muted-foreground">{message}</p>}
             {updating && !loading && !user && <p role="alert" className="text-sm text-danger">Your reset link is missing or expired. <Link to="/recover-password" className="underline">Request a new link</Link>.</p>}
             <Button type="submit" loading={saving} disabled={updating && (loading || !user)} className="w-full">{updating ? 'Update password' : 'Send reset link'}</Button>
-            <Link to="/login" className="text-sm text-muted hover:text-ink">Back to sign in</Link>
+            <Link to="/login" className="text-sm text-muted-foreground hover:text-ink">Back to sign in</Link>
           </form>
         </Card>
       </div>

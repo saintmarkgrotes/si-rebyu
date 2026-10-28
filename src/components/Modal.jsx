@@ -77,7 +77,7 @@ const Modal = ({ open, onClose, title, size = 'md', children }) => {
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="-mr-2 -mt-1 rounded-md px-2 py-1 text-xl leading-none text-muted transition-colors hover:bg-subtle hover:text-ink"
+            className="-mr-2 -mt-1 rounded-md px-2 py-1 text-xl leading-none text-muted-foreground transition-colors hover:bg-subtle hover:text-ink"
           >
             ×
           </button>

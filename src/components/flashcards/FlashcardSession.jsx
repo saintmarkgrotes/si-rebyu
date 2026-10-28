@@ -106,24 +106,24 @@ const FlashcardSession = ({ loadSession, defaultTitle, emptyMessage, loadErrorMe
           </div>
         )}
 
-        {queue === null && !error && <p className="mt-8 text-sm text-muted">Loading…</p>}
+        {queue === null && !error && <p className="mt-8 text-sm text-muted-foreground">Loading…</p>}
 
         {queue !== null && total === 0 && (
           <Card className="mt-8 text-center">
-            <p className="text-sm text-muted">{emptyMessage}</p>
+            <p className="text-sm text-muted-foreground">{emptyMessage}</p>
           </Card>
         )}
 
         {queue !== null && total > 0 && card && (
           <div className="mt-8 flex flex-col gap-6">
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted-foreground">
               Card {position} of {total}
             </p>
             <Flashcard front={card.front} back={card.back} revealed={revealed} onReveal={() => setRevealed(true)} />
             {revealed ? (
               <RatingButtons onRate={handleRate} disabled={submitting} />
             ) : (
-              <p className="text-center text-xs text-muted">Show the answer, then rate how well you knew it.</p>
+              <p className="text-center text-xs text-muted-foreground">Show the answer, then rate how well you knew it.</p>
             )}
           </div>
         )}

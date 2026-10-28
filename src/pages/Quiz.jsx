@@ -106,17 +106,17 @@ const Quiz = () => {
           </div>
         )}
 
-        {questions === null && !error && <p className="mt-8 text-sm text-muted">Loading…</p>}
+        {questions === null && !error && <p className="mt-8 text-sm text-muted-foreground">Loading…</p>}
 
         {questions !== null && total === 0 && (
           <Card className="mt-8 text-center">
-            <p className="text-sm text-muted">This study set has no questions yet.</p>
+            <p className="text-sm text-muted-foreground">This study set has no questions yet.</p>
           </Card>
         )}
 
         {question && !finished && (
           <div className="mt-8 flex flex-col gap-4">
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted-foreground">
               Question {index + 1} of {total}
             </p>
             <QuestionCard key={question.id} question={question} onAnswered={handleAnswered} />

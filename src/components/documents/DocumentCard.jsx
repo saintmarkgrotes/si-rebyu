@@ -21,7 +21,7 @@ const StudySetRow = ({ set, now, onDelete }) => {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate text-sm text-ink">{set.title}</p>
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted-foreground">
             {state.kind === 'ready' ? summary || 'Empty set' : state.label}
           </p>
         </div>
@@ -64,7 +64,7 @@ const StudySetRow = ({ set, now, onDelete }) => {
       )}
       {state.kind === 'ready' &&
         warnings.map((w) => (
-          <p key={w} className="text-xs text-muted">
+          <p key={w} className="text-xs text-muted-foreground">
             {w}
           </p>
         ))}
@@ -91,7 +91,7 @@ const DocumentCard = ({ doc, studySets = [], now, onGenerate, onRetry, onDelete,
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-ink">{doc.title}</p>
-          <p className="mt-0.5 text-xs text-muted">{details.join(' · ')}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{details.join(' · ')}</p>
           {doc.status === 'failed' && doc.error_message && (
             <p className="mt-1 text-xs text-danger">{doc.error_message}</p>
           )}

@@ -63,7 +63,7 @@ const ChangePasswordForm = () => {
         onChange={(e) => setConfirm(e.target.value)}
       />
       {error && <p className="text-sm text-danger">{error}</p>}
-      {success && <p className="text-sm text-muted">{success}</p>}
+      {success && <p className="text-sm text-muted-foreground">{success}</p>}
       <div>
         <Button type="submit" loading={saving}>
           Update password
@@ -83,11 +83,11 @@ const Settings = () => {
 
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-semibold text-ink">Settings</h1>
-        <p className="mt-1 text-sm text-muted">Manage your appearance and account.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Manage your appearance and account.</p>
 
         <Card className="mt-8">
           <h2 className="text-lg font-semibold text-ink">Appearance</h2>
-          <p className="mt-1 text-sm text-muted">
+          <p className="mt-1 text-sm text-muted-foreground">
             Choose how si-rebyu looks. “System” follows your device setting.
           </p>
           <div role="radiogroup" aria-label="Theme" className="mt-4 flex gap-2">
@@ -115,7 +115,7 @@ const Settings = () => {
 
         <Card className="mt-6">
           <h2 className="text-lg font-semibold text-ink">Account</h2>
-          <p className="mt-1 text-sm text-muted">Signed in as {user?.email}</p>
+          <p className="mt-1 text-sm text-muted-foreground">Signed in as {user?.email}</p>
           <div className="mt-6">
             <ChangePasswordForm />
           </div>

@@ -70,7 +70,7 @@ const StudyTasks = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold text-ink">To study</h2>
-          <p className="text-sm text-muted">
+          <p className="text-sm text-muted-foreground">
             {loading ? 'Loading…' : `${pendingCount} to do`}
           </p>
         </div>
@@ -90,7 +90,7 @@ const StudyTasks = () => {
       <div className="mt-4">
         {!loading && tasks.length === 0 ? (
           <Card className="p-6! text-center">
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted-foreground">
               Nothing here yet. Tap the + to add something to study.
             </p>
           </Card>
@@ -109,18 +109,18 @@ const StudyTasks = () => {
                   <div className="min-w-0 flex-1">
                     <p
                       className={`text-sm font-medium ${
-                        task.is_done ? 'text-muted line-through' : 'text-ink'
+                        task.is_done ? 'text-muted-foreground line-through' : 'text-ink'
                       }`}
                     >
                       {task.title}
                     </p>
                     {task.note && (
-                      <p className="mt-1 whitespace-pre-wrap text-sm text-muted">{task.note}</p>
+                      <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{task.note}</p>
                     )}
                     {task.due_date && (
                       <p
                         className={`mt-1 text-xs ${
-                          isOverdue(task) ? 'font-medium text-ink underline' : 'text-muted'
+                          isOverdue(task) ? 'font-medium text-ink underline' : 'text-muted-foreground'
                         }`}
                       >
                         {isOverdue(task) ? 'Overdue · ' : 'Due '}
@@ -132,7 +132,7 @@ const StudyTasks = () => {
                     type="button"
                     onClick={() => handleDelete(task)}
                     aria-label={`Delete "${task.title}"`}
-                    className="rounded-md px-2 py-1 text-lg leading-none text-muted transition-colors hover:bg-subtle hover:text-ink"
+                    className="rounded-md px-2 py-1 text-lg leading-none text-muted-foreground transition-colors hover:bg-subtle hover:text-ink"
                   >
                     ×
                   </button>

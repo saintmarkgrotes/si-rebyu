@@ -40,7 +40,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="task-note" className="text-sm font-medium text-ink">
-          Note <span className="font-normal text-muted">(optional)</span>
+          Note <span className="font-normal text-muted-foreground">(optional)</span>
         </label>
         <textarea
           id="task-note"
@@ -48,7 +48,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
           placeholder="Anything you want to remember…"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full resize-none rounded-md border border-line px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus-visible:outline-2 focus-visible:outline-ink"
+          className="w-full resize-none rounded-md border border-line px-3 py-2.5 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-ink"
         />
       </div>
 

@@ -4,7 +4,7 @@ import { pluralize } from '../../lib/generation'
 
 const DueReviewCard = ({ count }) => (
   <Card>
-    <p className="text-sm text-muted">Today's review</p>
+    <p className="text-sm text-muted-foreground">Today's review</p>
     <p className="mt-2 text-2xl font-semibold text-ink">{count === null ? '—' : pluralize(count, 'card')}</p>
     {count > 0 ? (
       <Link
@@ -14,7 +14,7 @@ const DueReviewCard = ({ count }) => (
         Start review
       </Link>
     ) : (
-      count === 0 && <p className="mt-3 text-xs text-muted">Nothing due right now.</p>
+      count === 0 && <p className="mt-3 text-xs text-muted-foreground">Nothing due right now.</p>
     )}
   </Card>
 )

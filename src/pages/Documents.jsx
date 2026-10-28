@@ -191,7 +191,7 @@ const Documents = () => {
       <NavHeader />
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-semibold text-ink">Your documents</h1>
-        <p className="mt-1 text-sm text-muted">
+        <p className="mt-1 text-sm text-muted-foreground">
           Upload a PDF, Word or PowerPoint file, then generate flashcards and questions from it.
         </p>
 
@@ -206,13 +206,13 @@ const Documents = () => {
               className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-ink file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper hover:file:bg-ink-hover disabled:opacity-50"
             />
           </label>
-          {uploading && <p className="mt-3 text-sm text-muted">Uploading…</p>}
+          {uploading && <p className="mt-3 text-sm text-muted-foreground">Uploading…</p>}
         </Card>
 
         {error && <p className="mt-4 text-sm text-danger">{error}</p>}
 
         {topicFilter && (
-          <p className="mt-4 text-sm text-muted">
+          <p className="mt-4 text-sm text-muted-foreground">
             Showing documents about <span className="text-ink">{topicFilter}</span> ·{' '}
             <Link to="/documents" className="underline-offset-2 hover:underline">
               Clear filter
@@ -222,9 +222,9 @@ const Documents = () => {
 
         <div className="mt-8">
           {loading || (topicFilter && topicDocIds === null && !topicFilterFailed) ? (
-            <p className="text-sm text-muted">Loading your documents…</p>
+            <p className="text-sm text-muted-foreground">Loading your documents…</p>
           ) : visibleDocuments.length === 0 ? (
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted-foreground">
               {topicFilter
                 ? `No documents found about "${topicFilter}".`
                 : 'No documents yet. Upload one above to get started.'}

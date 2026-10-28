@@ -54,7 +54,7 @@ const Dashboard = () => {
         <h1 className="text-2xl font-semibold text-ink">
           Welcome back{user?.email ? `, ${user.email}` : ''}
         </h1>
-        <p className="mt-1 text-sm text-muted">Here's where your studying stands.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Here's where your studying stands.</p>
 
         {error && <p className="mt-6 text-sm text-danger">{error}</p>}
 

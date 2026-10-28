@@ -44,7 +44,7 @@ const ChoiceGroup = ({ id, label, value, choices, onChange }) => (
 )
 
 const Check = ({ label, checked, onChange, disabled = false }) => (
-  <label className={`flex items-center gap-2 text-sm ${disabled ? 'text-muted' : 'text-ink'}`}>
+  <label className={`flex items-center gap-2 text-sm ${disabled ? 'text-muted-foreground' : 'text-ink'}`}>
     <input
       type="checkbox"
       checked={checked}
@@ -134,7 +134,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay, initialTopic }) 
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <p className="text-sm text-muted">
+      <p className="text-sm text-muted-foreground">
         Study material is created from “{doc.title}” only, and every item points back to where it came from.
       </p>
 
@@ -178,7 +178,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay, initialTopic }) 
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-sm font-medium text-ink">Topics</legend>
         {initialTopic && (
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted-foreground">
             Pre-selected from your Dashboard: <span className="text-ink">{initialTopic}</span>
           </p>
         )}
@@ -200,7 +200,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay, initialTopic }) 
             </div>
           ))}
         {topics && topics.length === 0 && (
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted-foreground">
             Topics appear here after your first study set, so later ones can focus on part of the document.
           </p>
         )}
@@ -215,7 +215,7 @@ const GenerateForm = ({ doc, onClose, onStarted, estimateDelay, initialTopic }) 
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <p className={`text-sm ${blocked ? 'text-danger' : 'text-muted'}`} aria-live="polite">
+      <p className={`text-sm ${blocked ? 'text-danger' : 'text-muted-foreground'}`} aria-live="polite">
         {estimateMessage}
       </p>
 

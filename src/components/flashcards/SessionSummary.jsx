@@ -7,7 +7,7 @@ const SessionSummary = ({ reviewed, correct, onDone, doneLabel = 'Back to docume
   return (
     <Card className="text-center">
       <h2 className="text-xl font-semibold text-ink">Session complete</h2>
-      <p className="mt-2 text-sm text-muted">
+      <p className="mt-2 text-sm text-muted-foreground">
         You reviewed {pluralize(reviewed, 'card')}
         {reviewed > 0 && <> and got {accuracy}% right the first time</>}.
       </p>
