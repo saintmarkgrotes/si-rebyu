@@ -14,7 +14,7 @@ vi.mock('../lib/quiz', async () => {
   return { ...actual, getStudySetQuestions: vi.fn(), submitAttempt: vi.fn() }
 })
 vi.mock('../lib/studySessions')
-vi.mock('../context/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
+vi.mock('../context/useAuth', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
 
 const navigateSpy = vi.fn()
 vi.mock('react-router-dom', async () => {

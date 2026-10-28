@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { getStudySet } from '../lib/flashcards'
 import { getStudySetQuestions, orderForQuiz, submitAttempt } from '../lib/quiz'
 import { startStudySession, endStudySession } from '../lib/studySessions'

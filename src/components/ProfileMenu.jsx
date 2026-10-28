@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 
 const itemClass =
   'flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-subtle focus-visible:bg-subtle'

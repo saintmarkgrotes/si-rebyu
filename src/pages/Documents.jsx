@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { uploadDocument, getDocuments, deleteDocument } from '../lib/documents'
 import { apiFetch } from '../lib/api'
 import { getStudySets, deleteStudySet } from '../lib/studySets'

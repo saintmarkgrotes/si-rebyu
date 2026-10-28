@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
