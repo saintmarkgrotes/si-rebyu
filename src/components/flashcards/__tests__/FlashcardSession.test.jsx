@@ -52,9 +52,10 @@ describe('FlashcardSession', () => {
     const user = userEvent.setup()
     renderSession()
     await screen.findByText('What is a VLAN?')
-    expect(screen.queryByText('Back of What is a VLAN?')).not.toBeInTheDocument()
+    expect(screen.getByText('Back of What is a VLAN?').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true')
     await user.click(screen.getByText('What is a VLAN?'))
-    expect(screen.getByText('Back of What is a VLAN?')).toBeInTheDocument()
+    expect(screen.getByText('Back of What is a VLAN?').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'false')
+    expect(screen.getByText('What is a VLAN?').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('rating a card saves the review and calls submitReview with the session id', async () => {

@@ -7,15 +7,15 @@ describe('Flashcard', () => {
   it('shows only the front and a hint before reveal', () => {
     render(<Flashcard front="What is a VLAN?" back="A logical network." revealed={false} onReveal={vi.fn()} />)
     expect(screen.getByText('What is a VLAN?')).toBeInTheDocument()
-    expect(screen.queryByText('A logical network.')).not.toBeInTheDocument()
+    expect(screen.getByText('A logical network.').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true')
     expect(screen.getByText(/click to show/i)).toBeInTheDocument()
   })
 
-  it('shows both sides once revealed, with no hint', () => {
+  it('shows only the answer face once revealed', () => {
     render(<Flashcard front="What is a VLAN?" back="A logical network." revealed onReveal={vi.fn()} />)
-    expect(screen.getByText('What is a VLAN?')).toBeInTheDocument()
-    expect(screen.getByText('A logical network.')).toBeInTheDocument()
-    expect(screen.queryByText(/click to show/i)).not.toBeInTheDocument()
+    expect(screen.getByText('What is a VLAN?').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'true')
+    expect(screen.getByText('A logical network.').closest('[aria-hidden]')).toHaveAttribute('aria-hidden', 'false')
+    expect(screen.getByRole('button', { name: 'Show question' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('clicking the card before reveal calls onReveal', async () => {
@@ -34,14 +34,14 @@ describe('Flashcard', () => {
     await user.keyboard('{Enter}')
     expect(onReveal).toHaveBeenCalledTimes(1)
     await user.keyboard(' ')
-    expect(onReveal).toHaveBeenCalledTimes(2)
+    expect(onReveal).toHaveBeenLastCalledWith(false)
   })
 
-  it('clicking or pressing keys after reveal does nothing further', async () => {
+  it('clicking the answer flips back to the question', async () => {
     const user = userEvent.setup()
     const onReveal = vi.fn()
     render(<Flashcard front="Q" back="A" revealed onReveal={onReveal} />)
     await user.click(screen.getByRole('button'))
-    expect(onReveal).not.toHaveBeenCalled()
+    expect(onReveal).toHaveBeenCalledWith(false)
   })
 })
