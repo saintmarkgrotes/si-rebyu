@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   animate,
   motion,
@@ -57,7 +57,9 @@ export default function FlipCard({
   const [dragging, setDragging] = useState(false);
   const shown = controlled ? flipped : inner;
   const shownRef = useRef(shown);
-  shownRef.current = shown;
+  useLayoutEffect(() => {
+    shownRef.current = shown;
+  }, [shown]);
   const rootRef = useRef(null);
   const grip = useRef(null);
   const spin = useRef(null);
@@ -93,15 +95,16 @@ export default function FlipCard({
     onFlipChange?.(next);
   };
   const flip = instant => {
-    const base = snap(turn.get());
+    // Toggle the intended face even when another flip is still animating.
+    const base = target.current;
     settle(isBack(base) ? base - 180 : base + 180, 0, instant);
   };
-  const rest = () => {
+  const rest = useCallback(() => {
     tiltX.set(0);
     tiltY.set(0);
     sheen.set(0);
     lift.set(1);
-  };
+  }, [tiltX, tiltY, sheen, lift]);
 
   useEffect(() => {
     if (!controlled || isBack(target.current) === flipped) return;
@@ -110,19 +113,17 @@ export default function FlipCard({
     target.current = isBack(base) ? base - 180 : base + 180;
     if (reduce) turn.jump(target.current);
     else spin.current = animate(turn, target.current, { type: 'spring', stiffness, damping, restDelta: 0.05 });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flipped]);
+  }, [controlled, flipped, reduce, turn, stiffness, damping]);
   useEffect(() => () => spin.current?.stop(), []);
   useEffect(() => {
     if (disabled) rest();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabled]);
+  }, [disabled, rest]);
 
   const onPointerDown = e => {
     if (disabled || e.button !== 0 || grip.current) return;
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {}
+    } catch { /* Pointer capture may be unavailable on a detached element. */ }
     spin.current?.stop();
     grip.current = {
       id: e.pointerId,
@@ -173,7 +174,7 @@ export default function FlipCard({
     grip.current = null;
     try {
       if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch {}
+    } catch { /* The browser may have already released this pointer. */ }
     setDragging(false);
     if (e.pointerType === 'touch' || !rootRef.current?.matches(':hover')) rest();
     if (!g.moved) {
