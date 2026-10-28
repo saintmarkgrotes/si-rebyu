@@ -10,6 +10,7 @@ import Settings from './pages/Settings'
 import FlashcardStudy from './pages/FlashcardStudy'
 import Quiz from './pages/Quiz'
 import Review from './pages/Review'
+import RecoverPassword from './pages/RecoverPassword'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<RootRedirect />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/recover-password" element={<RecoverPassword />} />
           <Route
             path="/dashboard"
             element={

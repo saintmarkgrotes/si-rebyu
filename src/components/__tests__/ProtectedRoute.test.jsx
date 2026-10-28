@@ -9,7 +9,7 @@ const LoginStub = () => {
 }
 
 const mockAuth = vi.fn()
-vi.mock('../../context/AuthContext', () => ({ useAuth: () => mockAuth() }))
+vi.mock('../../context/useAuth', () => ({ useAuth: () => mockAuth() }))
 
 const renderAt = (path) =>
   render(

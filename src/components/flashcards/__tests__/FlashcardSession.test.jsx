@@ -9,7 +9,7 @@ import { ThemeProvider } from '../../../context/ThemeContext'
 
 vi.mock('../../../lib/flashcards')
 vi.mock('../../../lib/studySessions')
-vi.mock('../../../context/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
+vi.mock('../../../context/useAuth', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
 
 const card = (id, front) => ({
   id, front, back: `Back of ${front}`, interval_days: 0, ease: 2.5, repetitions: 0, lapses: 0,

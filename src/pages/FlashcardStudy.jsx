@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { getStudySet, getStudySetFlashcards } from '../lib/flashcards'
 import { startStudySession } from '../lib/studySessions'
 import FlashcardSession from '../components/flashcards/FlashcardSession'

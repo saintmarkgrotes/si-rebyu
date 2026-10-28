@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { useTheme } from '../context/useTheme'
 import { supabase } from '../lib/supabase'
 import Card from '../components/Card'

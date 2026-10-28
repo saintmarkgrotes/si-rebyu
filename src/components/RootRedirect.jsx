@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 
 // Sends a signed-in user back into the app and everyone else to sign in. Used for the bare root
 // and for any path that doesn't match a real route, so a stale bookmark or a typo never dumps a

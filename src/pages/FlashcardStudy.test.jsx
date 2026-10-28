@@ -7,7 +7,7 @@ import { startStudySession } from '../lib/studySessions'
 
 vi.mock('../lib/flashcards')
 vi.mock('../lib/studySessions')
-vi.mock('../context/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
+vi.mock('../context/useAuth', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
 vi.mock('../components/flashcards/FlashcardSession', () => ({ default: vi.fn(() => null) }))
 import FlashcardSession from '../components/flashcards/FlashcardSession'
 

@@ -13,7 +13,7 @@ vi.mock('../lib/documents')
 vi.mock('../lib/studySets')
 vi.mock('../lib/api')
 vi.mock('../lib/progress')
-vi.mock('../context/AuthContext', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
+vi.mock('../context/useAuth', () => ({ useAuth: () => ({ user: { id: 'u1' } }) }))
 
 const now = () => new Date().toISOString()
 

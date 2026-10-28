@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../../context/useAuth'
 import { submitReview } from '../../lib/flashcards'
 import { endStudySession } from '../../lib/studySessions'
 import { applyRating, buildQueue, currentCard } from '../../lib/studyQueue'
