@@ -8,7 +8,7 @@ const Input = ({ label, id, error, className = '', ...props }) => {
       )}
       <input
         id={id}
-        className={`w-full rounded-md border px-3 py-2.5 text-sm text-ink placeholder:text-muted
+        className={`w-full rounded-md border px-3 py-2.5 text-sm text-ink placeholder:text-muted-foreground
           focus:outline-none focus-visible:outline-2 focus-visible:outline-ink
           ${error ? 'border-danger' : 'border-line'} ${className}`}
         {...props}

@@ -15,7 +15,7 @@ const iconProps = {
   strokeLinecap: 'round',
   strokeLinejoin: 'round',
   'aria-hidden': true,
-  className: 'shrink-0 text-muted',
+  className: 'shrink-0 text-muted-foreground',
 }
 
 const Icons = {
@@ -117,7 +117,7 @@ const ProfileMenu = () => {
           className="absolute right-0 z-40 mt-2 w-60 rounded-lg border border-line bg-paper p-1.5 shadow-xl"
         >
           <div className="px-3 py-2">
-            <p className="text-xs text-muted">Signed in as</p>
+            <p className="text-xs text-muted-foreground">Signed in as</p>
             <p className="truncate text-sm font-medium text-ink" title={user?.email}>
               {user?.email ?? 'Your account'}
             </p>

@@ -4,7 +4,7 @@ import ProfileMenu from './ProfileMenu'
 
 const linkBase = 'text-sm font-medium transition-colors'
 const linkClass = ({ isActive }) =>
-  `${linkBase} ${isActive ? 'text-ink' : 'text-muted hover:text-ink'}`
+  `${linkBase} ${isActive ? 'text-ink' : 'text-muted-foreground hover:text-ink'}`
 
 const NavHeader = () => {
   return (

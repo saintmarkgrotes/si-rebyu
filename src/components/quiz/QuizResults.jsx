@@ -15,7 +15,7 @@ const QuizResults = ({ results, onTryAgain, onDone }) => {
         <h2 className="text-xl font-semibold text-ink">
           Score: {correct} / {total}
         </h2>
-        <p className="mt-1 text-sm text-muted">{accuracy}% correct</p>
+        <p className="mt-1 text-sm text-muted-foreground">{accuracy}% correct</p>
       </Card>
 
       {topics.length > 0 && (
@@ -25,7 +25,7 @@ const QuizResults = ({ results, onTryAgain, onDone }) => {
             {topics.map((t) => (
               <li key={t.topic} className="flex items-center justify-between text-sm">
                 <span className="text-ink">{t.topic}</span>
-                <span className="text-muted">
+                <span className="text-muted-foreground">
                   {t.percent}% ({t.correct}/{t.total})
                 </span>
               </li>
@@ -41,9 +41,9 @@ const QuizResults = ({ results, onTryAgain, onDone }) => {
             {missed.map((r) => (
               <li key={r.question.id} className="border-t border-line pt-3 first:border-0 first:pt-0">
                 <p className="text-sm text-ink">{r.question.question_text}</p>
-                <p className="mt-1 text-sm text-muted">Your answer: {r.userAnswer || '(left blank)'}</p>
-                <p className="text-sm text-muted">Correct answer: {r.question.correct_answer}</p>
-                {r.question.explanation && <p className="mt-1 text-xs text-muted">{r.question.explanation}</p>}
+                <p className="mt-1 text-sm text-muted-foreground">Your answer: {r.userAnswer || '(left blank)'}</p>
+                <p className="text-sm text-muted-foreground">Correct answer: {r.question.correct_answer}</p>
+                {r.question.explanation && <p className="mt-1 text-xs text-muted-foreground">{r.question.explanation}</p>}
               </li>
             ))}
           </ul>

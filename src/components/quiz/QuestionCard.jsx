@@ -113,8 +113,8 @@ const QuestionCard = ({ question, onAnswered }) => {
             <p className="text-sm font-medium text-ink">Your answer: {text || '(left blank)'}</p>
           )}
           <p className="text-sm text-ink">Correct answer: {question.correct_answer}</p>
-          {question.explanation && <p className="text-sm text-muted">{question.explanation}</p>}
-          {source && <p className="text-xs text-muted">Source: {source}</p>}
+          {question.explanation && <p className="text-sm text-muted-foreground">{question.explanation}</p>}
+          {source && <p className="text-xs text-muted-foreground">Source: {source}</p>}
 
           {!auto && selfVerdict === null && (
             <div className="mt-2 flex gap-2">

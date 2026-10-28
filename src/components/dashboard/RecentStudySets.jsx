@@ -5,9 +5,9 @@ import { countsSummary } from '../../lib/generation'
 const RecentStudySets = ({ studySets }) => (
   <Card>
     <h3 className="text-sm font-medium text-ink">Recent study sets</h3>
-    {studySets === null && <p className="mt-3 text-sm text-muted">Loading…</p>}
+    {studySets === null && <p className="mt-3 text-sm text-muted-foreground">Loading…</p>}
     {studySets !== null && studySets.length === 0 && (
-      <p className="mt-3 text-sm text-muted">
+      <p className="mt-3 text-sm text-muted-foreground">
         Upload a document and generate study material to see it here.
       </p>
     )}
@@ -19,7 +19,7 @@ const RecentStudySets = ({ studySets }) => (
             <li key={s.id} className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="truncate text-sm text-ink">{s.title}</p>
-                {summary && <p className="text-xs text-muted">{summary}</p>}
+                {summary && <p className="text-xs text-muted-foreground">{summary}</p>}
               </div>
               <div className="flex shrink-0 items-center gap-3">
                 {s.flashcard_count > 0 && (
