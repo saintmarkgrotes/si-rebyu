@@ -268,7 +268,7 @@ export default function FlipCard({
           ) : null}
         </div>
         <div
-          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-data-fade:[transition:opacity_200ms_ease] [transform:rotateY(180deg)] group-data-[axis=x]:[transform:rotateX(180deg)] group-data-fade:transform-none! group-data-[fade=back]:opacity-100!"
+          className="absolute inset-0 overflow-hidden rounded-(--fc-radius) [background:var(--fc-bg)] text-(--fc-ink) backface-hidden [-webkit-backface-visibility:hidden] [&_img]:[-webkit-user-drag:none] group-data-fade:opacity-0 group-data-fade:backface-visible group-data-fade:[-webkit-backface-visibility:visible] group-data-fade:[transition:opacity_200ms_ease] transform-[rotateY(180deg)] group-data-[axis=x]:transform-[rotate(180deg)] group-data-fade:transform-none! group-data-[fade=back]:opacity-100!"
           aria-hidden={!shown}
           inert={!shown}
         >
