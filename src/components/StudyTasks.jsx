@@ -89,7 +89,7 @@ const StudyTasks = () => {
 
       <div className="mt-4">
         {!loading && tasks.length === 0 ? (
-          <Card className="p-6! text-center">
+          <Card elevated className="p-6! text-center">
             <p className="text-sm text-muted-foreground">
               Nothing here yet. Tap the + to add something to study.
             </p>
@@ -98,7 +98,7 @@ const StudyTasks = () => {
           <ul className="flex flex-col gap-3">
             {tasks.map((task) => (
               <li key={task.id}>
-                <Card className="flex items-start gap-3 p-4!">
+                <Card elevated className="flex items-start gap-3 p-4!">
                   <input
                     type="checkbox"
                     checked={task.is_done}

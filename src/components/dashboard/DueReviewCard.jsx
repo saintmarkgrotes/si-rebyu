@@ -3,7 +3,7 @@ import Card from '../Card'
 import { pluralize } from '../../lib/generation'
 
 const DueReviewCard = ({ count }) => (
-  <Card>
+  <Card elevated>
     <p className="text-sm text-muted-foreground">Today's review</p>
     <p className="mt-2 text-2xl font-semibold text-ink">{count === null ? '—' : pluralize(count, 'card')}</p>
     {count > 0 ? (
