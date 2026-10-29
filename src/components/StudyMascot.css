@@ -1,0 +1,122 @@
+.study-mascot {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.study-mascot__button {
+  position: relative;
+  display: flex;
+  flex: 0 0 11rem;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.study-mascot__halo {
+  position: absolute;
+  inset: 16% 3% 16%;
+  border-radius: 50%;
+  background: var(--color-subtle);
+}
+
+.study-mascot__image {
+  position: relative;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transform-origin: 50% 85%;
+  animation: rebyu-hello 1.2s ease-in-out both;
+  transition: transform 180ms ease;
+}
+
+.study-mascot__button:hover .study-mascot__image {
+  transform: translateY(-3px) rotate(-3deg);
+}
+
+.study-mascot__hint {
+  position: relative;
+  margin-top: -0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
+
+.study-mascot__bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  background: var(--color-paper);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.study-mascot__bubble::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 7px);
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-line);
+  background: var(--color-paper);
+  transform: rotate(45deg);
+}
+
+.study-mascot--compact {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.study-mascot--compact .study-mascot__button {
+  flex-basis: auto;
+  width: 8.5rem;
+}
+
+.study-mascot--compact .study-mascot__bubble {
+  width: 100%;
+  text-align: center;
+}
+
+.study-mascot--compact .study-mascot__bubble::before {
+  top: -7px;
+  left: calc(50% - 6px);
+  transform: rotate(135deg);
+}
+
+@keyframes rebyu-hello {
+  0% { transform: translateY(5px) rotate(0); }
+  25% { transform: translateY(-4px) rotate(-7deg); }
+  50% { transform: translateY(-4px) rotate(6deg); }
+  75% { transform: translateY(-2px) rotate(-3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+@media (max-width: 480px) {
+  .study-mascot:not(.study-mascot--compact) {
+    gap: 0.75rem;
+  }
+
+  .study-mascot:not(.study-mascot--compact) .study-mascot__button {
+    flex-basis: 6.5rem;
+  }
+
+  .study-mascot__bubble {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .study-mascot__image,
+  .study-mascot__button:hover .study-mascot__image {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+}
