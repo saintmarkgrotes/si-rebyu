@@ -25,7 +25,7 @@ const ChoiceList = ({ options, choice, onChoose }) => (
           value={opt}
           checked={choice === opt}
           onChange={() => onChoose(opt)}
-          className="h-4 w-4 accent-ink"
+          className="h-4 w-4 accent-accent-strong"
         />
         {opt}
       </label>

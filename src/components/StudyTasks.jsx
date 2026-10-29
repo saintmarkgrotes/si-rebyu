@@ -79,7 +79,7 @@ const StudyTasks = () => {
           onClick={() => setModalOpen(true)}
           aria-label="Add a task"
           title="Add a task"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-2xl leading-none text-paper transition-colors hover:bg-ink-hover"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-2xl leading-none text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           +
         </button>
@@ -104,7 +104,7 @@ const StudyTasks = () => {
                     checked={task.is_done}
                     onChange={() => handleToggle(task)}
                     aria-label={`Mark "${task.title}" as ${task.is_done ? 'not done' : 'done'}`}
-                    className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-ink"
+                    className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-accent-strong"
                   />
                   <div className="min-w-0 flex-1">
                     <p

@@ -125,7 +125,7 @@ const Quiz = () => {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="rounded-md bg-ink px-4 py-2.5 text-sm font-medium text-paper hover:bg-ink-hover"
+                  className="rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary-hover"
                 >
                   {index + 1 === total ? 'See results' : 'Next'}
                 </button>

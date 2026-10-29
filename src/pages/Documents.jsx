@@ -203,7 +203,7 @@ const Documents = () => {
               accept={ACCEPTED_TYPES.join(',')}
               onChange={handleFileChange}
               disabled={uploading}
-              className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-ink file:px-4 file:py-2 file:text-sm file:font-medium file:text-paper hover:file:bg-ink-hover disabled:opacity-50"
+              className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:bg-primary-hover disabled:opacity-50"
             />
           </label>
           {uploading && <p className="mt-3 text-sm text-muted-foreground">Uploading…</p>}
