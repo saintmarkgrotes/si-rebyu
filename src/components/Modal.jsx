@@ -69,7 +69,7 @@ const Modal = ({ open, onClose, title, size = 'md', children }) => {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`max-h-[calc(100vh-2rem)] w-full overflow-y-auto rounded-lg border border-line bg-paper p-6 shadow-xl ${SIZES[size]}`}
+        className={`max-h-[calc(100vh-2rem)] w-full overflow-y-auto rounded-xl border border-line bg-card p-6 shadow-xl ${SIZES[size]}`}
       >
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-lg font-semibold text-ink">{title}</h2>

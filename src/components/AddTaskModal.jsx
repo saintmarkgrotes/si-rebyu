@@ -48,7 +48,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
           placeholder="Anything you want to remember…"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full resize-none rounded-md border border-line px-3 py-2.5 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-ink"
+          className="w-full resize-none rounded-md border border-input bg-card px-3 py-2.5 text-sm text-ink placeholder:text-muted-foreground focus:outline-none focus-visible:outline-2 focus-visible:outline-ring"
         />
       </div>
 
