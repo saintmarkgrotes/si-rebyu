@@ -35,8 +35,8 @@ export default function StudyMascot({ message, compact = false }) {
         <span className="study-mascot__hint">Tap to say hi</span>
       </button>
       <div className="study-mascot__bubble">
-        <p className="text-xs font-semibold tracking-wide text-muted-foreground">REBYU · YOUR STUDY BUDDY</p>
-        <p id={messageId} role="status" aria-live="polite" aria-atomic="true" className="mt-2 text-sm leading-relaxed text-ink">
+        <p className="text-xs font-semibold tracking-wide text-secondary-foreground">REBYU · YOUR STUDY BUDDY</p>
+        <p id={messageId} role="status" aria-live="polite" aria-atomic="true" className="mt-2 text-sm leading-relaxed text-secondary-foreground">
           {taps === 0 ? message : encouragements[(taps - 1) % encouragements.length]}
         </p>
       </div>

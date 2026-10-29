@@ -20,7 +20,8 @@
   position: absolute;
   inset: 16% 3% 16%;
   border-radius: 50%;
-  background: var(--color-subtle);
+  background: var(--color-matcha);
+  opacity: 0.2;
 }
 
 .study-mascot__image {
@@ -49,9 +50,9 @@
   flex: 1;
   min-width: 0;
   padding: 1.25rem 1.5rem;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--secondary-border);
   border-radius: 1.25rem;
-  background: var(--color-paper);
+  background: var(--secondary);
   text-align: left;
   overflow-wrap: anywhere;
 }
@@ -63,9 +64,9 @@
   left: -7px;
   width: 12px;
   height: 12px;
-  border-bottom: 1px solid var(--color-line);
-  border-left: 1px solid var(--color-line);
-  background: var(--color-paper);
+  border-bottom: 1px solid var(--secondary-border);
+  border-left: 1px solid var(--secondary-border);
+  background: var(--secondary);
   transform: rotate(45deg);
 }
 
