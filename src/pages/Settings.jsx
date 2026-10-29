@@ -102,7 +102,7 @@ const Settings = () => {
                   onClick={() => setTheme(opt.value)}
                   className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                     selected
-                      ? 'border-ink bg-ink text-paper'
+                      ? 'border-primary bg-primary text-primary-foreground'
                       : 'border-line text-ink hover:bg-subtle'
                   }`}
                 >

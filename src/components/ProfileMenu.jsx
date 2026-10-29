@@ -114,7 +114,7 @@ const ProfileMenu = () => {
         <div
           role="menu"
           aria-label="Profile"
-          className="absolute right-0 z-40 mt-2 w-60 rounded-lg border border-line bg-paper p-1.5 shadow-xl"
+          className="absolute right-0 z-40 mt-2 w-60 rounded-lg border border-line bg-popover p-1.5 shadow-xl"
         >
           <div className="px-3 py-2">
             <p className="text-xs text-muted-foreground">Signed in as</p>
