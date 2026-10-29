@@ -32,7 +32,7 @@ const ChoiceGroup = ({ id, label, value, choices, onChange }) => (
             aria-pressed={selected}
             onClick={() => onChange(choice.value)}
             className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
-              selected ? 'border-ink bg-ink text-paper' : 'border-line text-ink hover:bg-subtle'
+              selected ? 'border-primary bg-primary text-primary-foreground' : 'border-line text-ink hover:bg-subtle'
             }`}
           >
             {choice.label}
@@ -50,7 +50,7 @@ const Check = ({ label, checked, onChange, disabled = false }) => (
       checked={checked}
       disabled={disabled}
       onChange={(e) => onChange(e.target.checked)}
-      className="h-4 w-4 accent-ink"
+      className="h-4 w-4 accent-accent-strong"
     />
     {label}
   </label>

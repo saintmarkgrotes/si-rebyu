@@ -9,7 +9,7 @@ const DueReviewCard = ({ count }) => (
     {count > 0 ? (
       <Link
         to="/review"
-        className="mt-3 inline-block rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink-hover"
+        className="mt-3 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary-hover"
       >
         Start review
       </Link>

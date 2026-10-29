@@ -9,7 +9,7 @@ const ProgressBar = ({ percent, label }) => (
     className="h-1.5 w-full overflow-hidden rounded-full bg-line"
   >
     <div
-      className="h-full rounded-full bg-ink transition-[width] duration-500 motion-reduce:transition-none"
+      className="h-full rounded-full bg-primary transition-[width] duration-500 motion-reduce:transition-none"
       style={{ width: `${percent}%` }}
     />
   </div>
