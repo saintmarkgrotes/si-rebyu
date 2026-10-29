@@ -4,6 +4,7 @@ import { useAuth } from '../context/useAuth'
 import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import StudyMascot from '../components/StudyMascot'
 
 const Login = () => {
   const { login, user, loading: authLoading } = useAuth()
@@ -35,8 +36,11 @@ const Login = () => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+    <div className="flex min-h-screen items-center justify-center bg-paper px-4 py-10">
       <div className="w-full max-w-sm">
+        <div className="mb-8">
+          <StudyMascot compact message="Hi, I’m Rebyu! A little company for your study journey. Let’s learn something new today." />
+        </div>
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-semibold text-ink">Sign in</h1>
         </div>
