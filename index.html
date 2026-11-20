@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script>
+        <script>
       // Apply the saved (or system) theme before first paint to avoid a flash.
       (function () {
         try {
@@ -19,6 +19,10 @@
             t === 'dark' ||
             (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
           document.documentElement.classList.toggle('dark', dark)
+          // strawberry & matcha is only for eligible accounts (see ThemeContext)
+          var ok = localStorage.getItem('si-rebyu-palette-ok') === '1'
+          var strawberry = ok && localStorage.getItem('si-rebyu-palette') !== 'mono'
+          document.documentElement.dataset.palette = strawberry ? 'strawberry' : 'mono'
         } catch (e) {}
       })()
     </script>
