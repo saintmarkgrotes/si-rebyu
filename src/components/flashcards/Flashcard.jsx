@@ -21,7 +21,7 @@ const Flashcard = ({ front, back, revealed, onReveal }) => (
     stiffness={170}
     damping={20}
     shadow
-    shadowColor="var(--color-matcha)"
+    shadowColor="var(--color-glow)"
     shadowOpacity={0.18}
     radius={12}
     background="var(--card)"
