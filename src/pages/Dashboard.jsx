@@ -26,10 +26,10 @@ const Dashboard = () => {
   const mascotMessage = stats?.dueCount > 0
     ? `You have ${stats.dueCount} ${stats.dueCount === 1 ? 'card' : 'cards'} ready to revisit. Let’s take them one at a time!`
     : stats && studySets?.length === 0
-      ? 'I’m Rebyu! Add your first document and we’ll start learning together. Kaya natin ’to!'
+      ? 'I’m Simang! Add your first document and we’ll start learning together. Kaya natin ’to!'
       : stats?.dueCount === 0
         ? 'You’re all caught up on reviews! Explore a study set, or take a well-earned breather.'
-        : 'I’m Rebyu, your little study buddy. Ready to learn something together?'
+        : 'I’m Simang, your little study buddy. Ready to learn something together?'
 
   useEffect(() => {
     let active = true

@@ -43,7 +43,7 @@ const Login = () => {
           <BrandLogo />
         </div>
         <div className="mb-8">
-          <StudyMascot compact message="Hi, I’m Rebyu! A little company for your study journey. Let’s learn something new today." />
+          <StudyMascot compact message="Hi, I’m Simang! A little company for your study journey. Let’s learn something new today." />
         </div>
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-semibold text-ink">Sign in</h1>
