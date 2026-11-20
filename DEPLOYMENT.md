@@ -94,3 +94,19 @@ not per-person. Fine for one or a few people; worth monitoring before opening th
   A paid tier or per-user usage limits become worth it at that point.
 - **A privacy policy.** Worth having before strangers upload real documents through a third-party
   AI provider, separately from the two people this is built for right now.
+
+## Theme access (strawberry & matcha)
+
+Everyone gets the minimal black & white theme. The strawberry & matcha theme is only offered to
+accounts whose Supabase `app_metadata.role` is `simang` or `admin`; they can still switch back to
+black & white in Settings → Appearance. `app_metadata` can't be edited by users themselves.
+
+Assign a role in the Supabase SQL editor (replace the email), then have that person sign out and
+back in so their session picks it up:
+
+```sql
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role": "simang"}'::jsonb
+where email = 'her-email@example.com';
+-- use "admin" for admin accounts
+```

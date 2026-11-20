@@ -5,26 +5,49 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Strawberry surfaces with matcha typography. */
+/* Base palette: minimal black & white. Every user gets this one.
+   The strawberry & matcha palette (below) is opt-in via html[data-palette='strawberry'],
+   which ThemeContext only sets for simang and admin accounts. */
 @theme {
   --color-strawberry: #f9d1d9;
   --color-matcha: #838f58;
+  --color-ink: #0a0a0a;
+  --color-paper: #ffffff;
+  --color-subtle: #f4f4f5;
+  --color-line: #e4e4e7;
+  --color-danger: #b91c1c;
+  --color-glow: #737373; /* mascot halo + flashcard shadow */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root.dark {
+  --color-ink: #fafafa;
+  --color-paper: #0a0a0a;
+  --color-subtle: #18181b;
+  --color-line: #27272a;
+  --color-danger: #f87171;
+  --color-glow: #a1a1aa;
+  color-scheme: dark; /* dark native controls: date picker, file input, scrollbars */
+}
+
+/* Strawberry & matcha, light: strawberry surfaces with matcha typography. */
+:root[data-palette='strawberry']:not(.dark) {
   --color-ink: #838f58;
   --color-paper: #f9d1d9;
   --color-subtle: #f4c3ce;
   --color-line: #ddadb8;
   --color-danger: #b3384d;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-glow: var(--color-matcha);
 }
 
-/* Dark mode swaps the palette: matcha surfaces with strawberry typography. */
-:root.dark {
+/* Strawberry & matcha, dark: matcha surfaces with strawberry typography. */
+:root[data-palette='strawberry'].dark {
   --color-ink: var(--color-strawberry);
   --color-paper: var(--color-matcha);
   --color-subtle: #707c49;
   --color-line: #a3ad80;
   --color-danger: #ffa7b6;
-  color-scheme: dark; /* dark native controls: date picker, file input, scrollbars */
+  --color-glow: var(--color-matcha);
 }
 
 /* Theme toggle transition: the new theme is revealed by a circular clip-path
@@ -99,34 +122,35 @@ body {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ---- Minimal black & white tokens (default) ---- */
 :root {
   color-scheme: light;
   --background: var(--color-paper);
   --foreground: var(--color-ink);
-  --card: #fce3e8;
+  --card: #fafafa;
   --card-foreground: var(--color-ink);
   --popover: var(--card);
   --popover-foreground: var(--color-ink);
-  --primary: var(--color-matcha);
-  --primary-hover: #929e68;
-  --primary-foreground: var(--color-strawberry);
-  --secondary: #fbdce3;
+  --primary: #0a0a0a;
+  --primary-hover: #27272a;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
   --secondary-foreground: var(--color-ink);
-  --secondary-border: #e9b9c3;
+  --secondary-border: #e4e4e7;
   --muted: var(--color-subtle);
-  --muted-foreground: #6f7a4a;
+  --muted-foreground: #52525b;
   --accent: var(--color-subtle);
-  --accent-foreground: #6f7a4a;
+  --accent-foreground: #0a0a0a;
   --accent-strong: var(--color-ink);
   --destructive: var(--color-danger);
   --border: var(--color-line);
-  --input: #919780;
-  --ring: #586638;
-  --chart-1: var(--color-matcha);
-  --chart-2: #ce8394;
-  --chart-3: #586638;
-  --chart-4: #b5a275;
-  --chart-5: #976d80;
+  --input: #a1a1aa;
+  --ring: #0a0a0a;
+  --chart-1: #0a0a0a;
+  --chart-2: #52525b;
+  --chart-3: #a1a1aa;
+  --chart-4: #d4d4d8;
+  --chart-5: #3f3f46;
   --radius: 0.625rem;
   --sidebar: var(--card);
   --sidebar-foreground: var(--foreground);
@@ -139,12 +163,48 @@ body {
 }
 
 .dark {
+  --card: #141414;
+  --primary: #fafafa;
+  --primary-hover: #e4e4e7;
+  --primary-foreground: #0a0a0a;
+  --secondary: #27272a;
+  --secondary-border: #3f3f46;
+  --muted-foreground: #a1a1aa;
+  --accent-foreground: #fafafa;
+  --input: #52525b;
+  --ring: #fafafa;
+  --chart-1: #fafafa;
+  --chart-2: #d4d4d8;
+  --chart-3: #a1a1aa;
+  --chart-4: #71717a;
+  --chart-5: #e4e4e7;
+}
+
+/* ---- Strawberry & matcha tokens (simang + admin only) ---- */
+:root[data-palette='strawberry']:not(.dark) {
+  --card: #fce3e8;
+  --primary: var(--color-matcha);
+  --primary-hover: #929e68;
+  --primary-foreground: var(--color-strawberry);
+  --secondary: #fbdce3;
+  --secondary-border: #e9b9c3;
+  --muted-foreground: #6f7a4a;
+  --accent-foreground: #6f7a4a;
+  --input: #919780;
+  --ring: #586638;
+  --chart-1: var(--color-matcha);
+  --chart-2: #ce8394;
+  --chart-3: #586638;
+  --chart-4: #b5a275;
+  --chart-5: #976d80;
+}
+
+:root[data-palette='strawberry'].dark {
   --card: #78844f;
   --primary: var(--color-strawberry);
   --primary-hover: #fce3e8;
   --primary-foreground: var(--color-matcha);
   --secondary: #74804c;
-  --secondary-foreground: var(--color-ink);
   --secondary-border: #a3ad80;
   --muted-foreground: #f3dce1;
   --accent-foreground: var(--color-strawberry);

@@ -16,8 +16,8 @@ const RecoverPassword = lazy(() => import('./pages/RecoverPassword'))
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <AuthProvider>
+    <AuthProvider>
+        <ThemeProvider>
         <BrowserRouter>
           <Suspense fallback={<p role="status" className="min-h-screen bg-paper p-8 text-muted-foreground">Loading…</p>}>
             <Routes>
@@ -76,8 +76,8 @@ const App = () => {
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </AuthProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 
