@@ -13,6 +13,18 @@ const THEME_OPTIONS = [
   { value: 'system', label: 'System' },
 ]
 
+const PALETTE_OPTIONS = [
+  { value: 'mono', label: 'Minimal (black & white)' },
+  { value: 'strawberry', label: 'Strawberry & matcha' },
+]
+
+const optionClass = (selected) =>
+  `rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+    selected
+      ? 'border-primary bg-primary text-primary-foreground'
+      : 'border-line text-ink hover:bg-subtle'
+  }`
+
 const ChangePasswordForm = () => {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -75,7 +87,7 @@ const ChangePasswordForm = () => {
 
 const Settings = () => {
   const { user } = useAuth()
-  const { preference, setTheme } = useTheme()
+  const { preference, setTheme, palette, setPalette, canUseStrawberry } = useTheme()
 
   return (
     <div className="min-h-screen bg-paper">
@@ -100,17 +112,36 @@ const Settings = () => {
                   role="radio"
                   aria-checked={selected}
                   onClick={() => setTheme(opt.value)}
-                  className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                    selected
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-line text-ink hover:bg-subtle'
-                  }`}
+                  className={optionClass(selected)}
                 >
                   {opt.label}
                 </button>
               )
             })}
           </div>
+
+          {canUseStrawberry && (
+            <>
+              <h3 className="mt-6 text-sm font-semibold text-ink">Color theme</h3>
+              <div role="radiogroup" aria-label="Color theme" className="mt-3 flex flex-wrap gap-2">
+                {PALETTE_OPTIONS.map((opt) => {
+                  const selected = palette === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => setPalette(opt.value)}
+                      className={optionClass(selected)}
+                    >
+                      {opt.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </>
+          )}
         </Card>
 
         <Card className="mt-6">
