@@ -13,6 +13,8 @@ const FlashcardStudy = lazy(() => import('./pages/FlashcardStudy'))
 const Quiz = lazy(() => import('./pages/Quiz'))
 const Review = lazy(() => import('./pages/Review'))
 const RecoverPassword = lazy(() => import('./pages/RecoverPassword'))
+const Privacy = lazy(() => import('./pages/Privacy'))
+const Terms = lazy(() => import('./pages/Terms'))
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
               <Route path="/" element={<RootRedirect />} />
               <Route path="/login" element={<Login />} />
               <Route path="/recover-password" element={<RecoverPassword />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route
                 path="/dashboard"
                 element={
