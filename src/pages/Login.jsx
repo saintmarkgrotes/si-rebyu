@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import Card from '../components/Card'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import StudyMascot from '../components/StudyMascot'
 import BrandLogo from '../components/BrandLogo'
+
 
 const Login = () => {
   const { login, user, loading: authLoading } = useAuth()
@@ -79,6 +80,17 @@ const Login = () => {
             </Button>
           </form>
         </Card>
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          By signing in you agree to our{' '}
+          <Link to="/terms" className="text-ink underline-offset-2 hover:underline">
+            Terms
+          </Link>{' '}
+          and{' '}
+          <Link to="/privacy" className="text-ink underline-offset-2 hover:underline">
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </div>
     </div>
   )
