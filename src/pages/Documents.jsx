@@ -111,11 +111,9 @@ const Documents = () => {
     return null
   }
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0]
-    e.target.value = '' // allow re-selecting the same file later
-    if (!file) return
-
+    // Validates a File, uploads it and asks the backend to read it. Shared by the
+  // computer picker and the Google Drive picker so both behave identically.
+  const ingestFile = async (file) => {
     const validationError = validateFile(file)
     if (validationError) {
       setError(validationError)
@@ -136,6 +134,13 @@ const Documents = () => {
     } finally {
       setUploading(false)
     }
+  }
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-selecting the same file later
+    if (!file) return
+    await ingestFile(file)
   }
 
   const handleDelete = async (doc) => {
