@@ -6,7 +6,9 @@ import { apiFetch } from '../lib/api'
 import { getStudySets, deleteStudySet } from '../lib/studySets'
 import { getDocumentsForTopic } from '../lib/progress'
 import { DOCUMENT_STALE_MINUTES, STUDY_SET_STALE_MINUTES, isStale } from '../lib/generation'
+import { isDriveConfigured, pickFromGoogleDrive } from '../lib/googleDrive'
 import Card from '../components/Card'
+import Button from '../components/Button'
 import NavHeader from '../components/NavHeader'
 import DocumentCard from '../components/documents/DocumentCard'
 import GenerateModal from '../components/documents/GenerateModal'
@@ -26,6 +28,7 @@ const Documents = () => {
   const [now, setNow] = useState(() => Date.now()) // refreshed on every poll, used to spot dead jobs
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [pickingDrive, setPickingDrive] = useState(false) // the Google Drive picker is open
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -143,6 +146,20 @@ const Documents = () => {
     await ingestFile(file)
   }
 
+  const handleDriveImport = async () => {
+    setError('')
+    setPickingDrive(true)
+    try {
+      const file = await pickFromGoogleDrive({ maxBytes: MAX_SIZE_MB * 1024 * 1024 })
+      setPickingDrive(false)
+      if (file) await ingestFile(file)
+    } catch (err) {
+      setError(err.message || 'Could not import from Google Drive.')
+    } finally {
+      setPickingDrive(false)
+    }
+  }
+
   const handleDelete = async (doc) => {
     if (!confirm(`Delete "${doc.title}"? This can't be undone.`)) return
     try {
@@ -211,6 +228,17 @@ const Documents = () => {
               className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:bg-primary-hover disabled:opacity-50"
             />
           </label>
+
+          {isDriveConfigured && (
+            <div className="mt-4 border-t border-line pt-4">
+              <Button variant="secondary" onClick={handleDriveImport} disabled={uploading || pickingDrive}>
+                {pickingDrive ? 'Opening Google Drive…' : 'Import from Google Drive'}
+              </Button>
+              <p className="mt-2 text-xs text-muted-foreground">
+                PDF, Word, PowerPoint, Google Docs and Google Slides. si-rebyu can only see the file you pick.
+              </p>
+            </div>
+          )}
           {uploading && <p className="mt-3 text-sm text-muted-foreground">Uploading…</p>}
         </Card>
 
