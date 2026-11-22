@@ -110,3 +110,25 @@ set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role": "s
 where email = 'her-email@example.com';
 -- use "admin" for admin accounts
 ```
+
+
+## Google Drive import (optional)
+
+Adds an "Import from Google Drive" button on the Documents page. The browser asks Google for the
+`drive.file` scope, so si-rebyu can only read the files a user picks, never browse their Drive.
+If the three variables below are empty the button simply doesn't show.
+
+1. In [Google Cloud Console](https://console.cloud.google.com), create (or reuse) a project.
+2. **APIs & Services → Library**: enable **Google Picker API** and **Google Drive API**.
+3. **APIs & Services → OAuth consent screen**: set it up as External and add the scope
+   `.../auth/drive.file` (a non-sensitive scope, so no Google verification is needed). While the app
+   is in "Testing", add every person who will use it under **Test users**.
+4. **Credentials → Create credentials → OAuth client ID → Web application**. Under *Authorized
+   JavaScript origins* add your Vercel URL and `http://localhost:5173`. Copy the client ID.
+5. **Credentials → Create credentials → API key**. Restrict it to *HTTP referrers* (your Vercel URL and
+   `http://localhost:5173/*`) and to the **Google Picker API**.
+6. Your **project number** is on the Cloud Console home page (Project info card).
+7. Set these in Vercel (and `.env.local` for local dev), then redeploy:
+   - `VITE_GOOGLE_CLIENT_ID` — the OAuth client ID
+   - `VITE_GOOGLE_API_KEY` — the API key
+   - `VITE_GOOGLE_APP_ID` — the project number
