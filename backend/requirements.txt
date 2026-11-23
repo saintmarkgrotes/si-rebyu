@@ -1,11 +1,11 @@
 # Pinned to exact versions tested against this codebase. Bump deliberately,
 # not automatically: a fresh `pip install` from an unpinned range can silently break a working
 # deploy months later when a dependency ships a breaking change.
-fastapi==0.162.0
+fastapi==0.165.0
 # Pin the tested TestClient implementation that uses AnyIO's supported portal API.
 starlette==1.10.0
 uvicorn[standard]==0.54.0
-pydantic-settings==2.16.2
+pydantic-settings==2.16.3
 httpx==0.28.1
 pypdf==6.21.4
 python-docx==1.2.0
