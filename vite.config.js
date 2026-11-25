@@ -25,7 +25,11 @@ export default defineConfig({
     setupFiles: './src/test/setup.js',
     env: {
       VITE_SUPABASE_URL: 'http://localhost:54321',
-      VITE_SUPABASE_ANON_KEY: 'test-anon-key'
+      VITE_SUPABASE_ANON_KEY: 'test-anon-key',
+      // Pin Google Drive to "not configured" so a developer's local .env can't change test results.
+      VITE_GOOGLE_CLIENT_ID: '',
+      VITE_GOOGLE_API_KEY: '',
+      VITE_GOOGLE_APP_ID: ''
     },
   },
 
