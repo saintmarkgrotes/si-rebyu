@@ -24,6 +24,12 @@ const Wrapper = ({ children }) => (
 
 const renderPage = () => render(<Documents />, { wrapper: Wrapper })
 
+// The upload sources live behind the "Add document" (+) menu.
+const chooseGoogleDrive = async () => {
+  await userEvent.click(await screen.findByRole('button', { name: /add document/i }))
+  await userEvent.click(await screen.findByRole('menuitem', { name: /google drive/i }))
+}
+
 beforeEach(() => {
   vi.resetAllMocks()
   getDocuments.mockResolvedValue([])
@@ -38,7 +44,7 @@ describe('Import from Google Drive', () => {
     uploadDocument.mockResolvedValue({ id: 'd9', title: 'Lecture.pdf', status: 'processing', file_type: 'pdf' })
 
     renderPage()
-    await userEvent.click(await screen.findByRole('button', { name: /import from google drive/i }))
+    await chooseGoogleDrive()
 
     await waitFor(() => expect(uploadDocument).toHaveBeenCalledWith(file, 'u1'))
     expect(apiFetch).toHaveBeenCalledWith('/documents/d9/process', { method: 'POST' })
@@ -47,7 +53,7 @@ describe('Import from Google Drive', () => {
   it('does nothing when the picker is cancelled', async () => {
     pickFromGoogleDrive.mockResolvedValue(null)
     renderPage()
-    await userEvent.click(await screen.findByRole('button', { name: /import from google drive/i }))
+    await chooseGoogleDrive()
     await waitFor(() => expect(pickFromGoogleDrive).toHaveBeenCalled())
     expect(uploadDocument).not.toHaveBeenCalled()
   })
@@ -55,7 +61,7 @@ describe('Import from Google Drive', () => {
   it('shows the error when Drive fails', async () => {
     pickFromGoogleDrive.mockRejectedValue(new Error('Google Drive access was not granted.'))
     renderPage()
-    await userEvent.click(await screen.findByRole('button', { name: /import from google drive/i }))
+    await chooseGoogleDrive()
     expect(await screen.findByText('Google Drive access was not granted.')).toBeInTheDocument()
   })
 })

@@ -7,11 +7,10 @@ import { getStudySets, deleteStudySet } from '../lib/studySets'
 import { getDocumentsForTopic } from '../lib/progress'
 import { DOCUMENT_STALE_MINUTES, STUDY_SET_STALE_MINUTES, isStale } from '../lib/generation'
 import { isDriveConfigured, pickFromGoogleDrive } from '../lib/googleDrive'
-import Card from '../components/Card'
-import Button from '../components/Button'
 import NavHeader from '../components/NavHeader'
 import DocumentCard from '../components/documents/DocumentCard'
 import GenerateModal from '../components/documents/GenerateModal'
+import UploadPanel from '../components/documents/UploadPanel'
 
 const ACCEPTED_TYPES = ['.pdf', '.docx', '.pptx']
 const MAX_SIZE_MB = 20
@@ -139,13 +138,6 @@ const Documents = () => {
     }
   }
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0]
-    e.target.value = '' // allow re-selecting the same file later
-    if (!file) return
-    await ingestFile(file)
-  }
-
   const handleDriveImport = async () => {
     setError('')
     setPickingDrive(true)
@@ -217,32 +209,22 @@ const Documents = () => {
           Upload a PDF, Word or PowerPoint file, then generate flashcards and questions from it.
         </p>
 
-        <Card className="mt-6">
-          <label className="flex flex-col gap-2">
-            <span className="text-sm font-medium text-ink">Upload a file</span>
-            <input
-              type="file"
-              accept={ACCEPTED_TYPES.join(',')}
-              onChange={handleFileChange}
-              disabled={uploading}
-              className="text-sm text-ink file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-medium file:text-primary-foreground hover:file:bg-primary-hover disabled:opacity-50"
-            />
-          </label>
+        <UploadPanel
+          className="mt-6"
+          acceptedTypes={ACCEPTED_TYPES}
+          maxSizeMb={MAX_SIZE_MB}
+          uploading={uploading}
+          pickingDrive={pickingDrive}
+          driveEnabled={isDriveConfigured}
+          onFile={ingestFile}
+          onDrive={handleDriveImport}
+        />
 
-          {isDriveConfigured && (
-            <div className="mt-4 border-t border-line pt-4">
-              <Button variant="secondary" onClick={handleDriveImport} disabled={uploading || pickingDrive}>
-                {pickingDrive ? 'Opening Google Drive…' : 'Import from Google Drive'}
-              </Button>
-              <p className="mt-2 text-xs text-muted-foreground">
-                PDF, Word, PowerPoint, Google Docs and Google Slides. si-rebyu can only see the file you pick.
-              </p>
-            </div>
-          )}
-          {uploading && <p className="mt-3 text-sm text-muted-foreground">Uploading…</p>}
-        </Card>
-
-        {error && <p className="mt-4 text-sm text-danger">{error}</p>}
+        {error && (
+          <p role="alert" className="mt-4 text-sm text-danger">
+            {error}
+          </p>
+        )}
 
         {topicFilter && (
           <p className="mt-4 text-sm text-muted-foreground">
