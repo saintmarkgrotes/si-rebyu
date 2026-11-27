@@ -90,7 +90,8 @@ describe('Documents page', () => {
     await waitFor(() => expect(submit).not.toBeDisabled())
     await user.click(submit)
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
-    expect(await screen.findByText('New set')).toBeInTheDocument()
+    const sets = await screen.findByRole('list', { name: 'Study sets for Networking.pdf' })
+    expect(within(sets).getByText('New set')).toBeInTheDocument()
   })
 
   it('deleting a document also removes its study sets from the list', async () => {
