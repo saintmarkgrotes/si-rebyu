@@ -10,7 +10,7 @@ import {
   sumCounts,
 } from '../../lib/generation'
 
-const StudySetRow = ({ set, now, onDelete }) => {
+export const StudySetRow = ({ set, now, onDelete }) => {
   const state = studySetState(set, now)
   const running = ['analyzing', 'generating', 'saving'].includes(state.kind)
   const summary = countsSummary({ flashcards: set.flashcard_count, questions: set.question_count })
@@ -25,6 +25,16 @@ const StudySetRow = ({ set, now, onDelete }) => {
             {state.kind === 'ready' ? summary || 'Empty set' : state.label}
           </p>
         </div>
+
+        {state.kind === 'ready' && (
+          <Link
+            to={`/sets/${set.id}/edit`}
+            className="rounded-md px-2 py-1 text-sm text-ink underline-offset-2 hover:underline"
+          >
+            Edit
+          </Link>
+        )}
+
         <div className="flex shrink-0 items-center gap-1">
           {state.kind === 'ready' && set.flashcard_count > 0 && (
             <Link
