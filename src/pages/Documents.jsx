@@ -8,7 +8,11 @@ import { getDocumentsForTopic } from '../lib/progress'
 import { DOCUMENT_STALE_MINUTES, STUDY_SET_STALE_MINUTES, isStale } from '../lib/generation'
 import { isDriveConfigured, pickFromGoogleDrive } from '../lib/googleDrive'
 import NavHeader from '../components/NavHeader'
-import DocumentCard from '../components/documents/DocumentCard'
+import { Plus } from 'lucide-react'
+import Card from '../components/Card'
+import Button from '../components/Button'
+import DocumentCard, { StudySetRow } from '../components/documents/DocumentCard'
+import NewSetModal from '../components/custom/NewSetModal'
 import GenerateModal from '../components/documents/GenerateModal'
 import UploadPanel from '../components/documents/UploadPanel'
 
@@ -29,6 +33,9 @@ const Documents = () => {
   const [uploading, setUploading] = useState(false)
   const [pickingDrive, setPickingDrive] = useState(false) // the Google Drive picker is open
   const [error, setError] = useState('')
+  const [newSetOpen, setNewSetOpen] = useState(false)
+  // study sets the user wrote themselves have no document
+  const customSets = studySets.filter((s) => !s.document_id)
 
   useEffect(() => {
   let active = true
@@ -261,6 +268,31 @@ const Documents = () => {
               ))}
             </ul>
           )}
+          <section className="mt-10" aria-labelledby="custom-sets-heading">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 id="custom-sets-heading" className="text-lg font-semibold text-ink">
+                  Your own sets
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Write your own flashcards and questions, no document needed.
+                </p>
+              </div>
+              <Button onClick={() => setNewSetOpen(true)}>
+                <Plus className="mr-1 size-4" aria-hidden />
+                New set
+              </Button>
+            </div>
+            {customSets.length > 0 && (
+              <Card className="mt-4 p-4!">
+                <ul className="flex flex-col gap-3" aria-label="Your own study sets">
+                  {customSets.map((set) => (
+                    <StudySetRow key={set.id} set={set} now={now} onDelete={handleDeleteSet} />
+                  ))}
+                </ul>
+              </Card>
+            )}
+          </section>
         </div>
       </main>
 
@@ -271,6 +303,7 @@ const Documents = () => {
         onStarted={handleStarted}
         initialTopic={topicFilter}
       />
+      <NewSetModal open={newSetOpen} onClose={() => setNewSetOpen(false)} />
     </div>
   )
 }
