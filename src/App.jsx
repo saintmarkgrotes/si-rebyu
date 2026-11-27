@@ -15,6 +15,7 @@ const Review = lazy(() => import('./pages/Review'))
 const RecoverPassword = lazy(() => import('./pages/RecoverPassword'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
+const EditSet = lazy(() => import('./pages/EditSet'))
 
 const App = () => {
   return (
@@ -57,6 +58,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Quiz />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/sets/:studySetId/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditSet />
                   </ProtectedRoute>
                 }
               />
