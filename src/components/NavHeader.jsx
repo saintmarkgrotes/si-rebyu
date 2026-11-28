@@ -3,28 +3,50 @@ import ThemeToggle from './ThemeToggle'
 import ProfileMenu from './ProfileMenu'
 import BrandLogo from './BrandLogo'
 
-const linkBase = 'flex min-h-11 items-center justify-center whitespace-nowrap rounded-lg px-2 py-2 text-xs font-medium transition-colors sm:px-3 sm:text-sm'
+const pill = 'rounded-full border border-line bg-card shadow-sm'
+
+const linkBase =
+  'flex min-h-9 items-center justify-center whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:px-4 sm:text-sm'
 const linkClass = ({ isActive }) =>
-  `${linkBase} ${isActive ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-subtle hover:text-ink'}`
+  `${linkBase} ${
+    isActive
+      ? 'bg-primary text-primary-foreground'
+      : 'text-muted-foreground hover:bg-subtle hover:text-ink'
+  }`
 
 const NavHeader = () => {
   return (
-    <header className="flex flex-nowrap items-center justify-between gap-2 border-b border-line bg-card px-2 py-3 sm:gap-6 sm:px-6 sm:py-4">
-      <div className="flex min-w-0 items-center gap-1 sm:gap-6">
-        <NavLink to="/dashboard" aria-label="si-rebyu home" className="flex min-h-11 shrink-0 items-center rounded-lg">
-          <BrandLogo compact />
+    <header className="sticky top-0 z-30 flex flex-nowrap items-center justify-between gap-2 bg-paper/80 px-2 py-3 backdrop-blur sm:gap-4 sm:px-6 sm:py-4">
+      {/* Left: brand pill */}
+      <NavLink
+        to="/dashboard"
+        aria-label="si-rebyu home"
+        className={`${pill} flex h-12 shrink-0 items-center px-2 sm:px-4`}
+      >
+        <BrandLogo compact />
+      </NavLink>
+
+      {/* Center: floating nav pill, active item is a filled pill */}
+      <nav
+        aria-label="Main navigation"
+        className={`${pill} flex min-w-0 items-center gap-0.5 overflow-x-auto p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+      >
+        <NavLink to="/dashboard" className={linkClass}>
+          Dashboard
         </NavLink>
-        <nav aria-label="Main navigation" className="flex shrink-0 items-center sm:gap-1">
-          <NavLink to="/dashboard" className={linkClass}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/documents" className={linkClass}>
-            Documents
-          </NavLink>
-        </nav>
-      </div>
-      <div className="ml-auto flex shrink-0 items-center sm:gap-2">
-        <ThemeToggle />
+        <NavLink to="/documents" className={linkClass}>
+          Documents
+        </NavLink>
+        <NavLink to="/review" className={linkClass}>
+          Review
+        </NavLink>
+      </nav>
+
+      {/* Right: actions pill + profile pill */}
+      <div className="flex shrink-0 items-center gap-2">
+        <div className={`${pill} hidden h-12 items-center px-1.5 sm:flex`}>
+          <ThemeToggle />
+        </div>
         <ProfileMenu />
       </div>
     </header>
