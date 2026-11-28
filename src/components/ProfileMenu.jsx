@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ChevronDown } from 'lucide-react'
 import { useAuth } from '../context/useAuth'
 
 const itemClass =
@@ -52,6 +53,10 @@ const ProfileMenu = () => {
   const [open, setOpen] = useState(false)
   const rootRef = useRef(null)
   const buttonRef = useRef(null)
+  const metaName = [user?.user_metadata?.display_name, user?.user_metadata?.full_name, user?.user_metadata?.name]
+    .find((n) => typeof n === 'string' && n.trim())
+  const displayName = metaName?.trim() || user?.email?.split('@')[0] || 'Account'
+  const initial = displayName.charAt(0).toUpperCase()
 
   // close on outside click / Escape
   useEffect(() => {
@@ -92,22 +97,19 @@ const ProfileMenu = () => {
         aria-haspopup="menu"
         aria-expanded={open}
         title="Profile"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-subtle"
+        className="flex h-12 items-center gap-2.5 rounded-full border border-line bg-card p-1.5 text-ink shadow-sm transition-colors hover:bg-subtle sm:pr-3"
       >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <span
           aria-hidden="true"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground"
         >
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21a8 8 0 0 1 16 0" />
-        </svg>
+          {initial}
+        </span>
+        <span className="hidden min-w-0 text-left leading-tight md:block">
+          <span className="block max-w-32 truncate text-sm font-semibold">{displayName}</span>
+          <span className="block max-w-32 truncate text-xs text-muted-foreground">{user?.email}</span>
+        </span>
+        <ChevronDown aria-hidden="true" size={16} className="hidden shrink-0 text-muted-foreground sm:block" />
       </button>
 
       {open && (
